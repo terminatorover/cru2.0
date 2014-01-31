@@ -106,10 +106,22 @@
 			if ( (2 < $day )&& ($day < 6)){//we first check if we are between W-Sat 
 				$times1 = db_query($from,$to,$hour,$route,$con);
 				$times2 = db_query($from,$to,1,$route,$con);
+				if ( $times1 != -1 && $times2 != -1){//both pre and post midnight queries are successful
+					$ret_handler = array();
+					array_push($ret_handler,$times1,$times2);
+					return $res_handler;
+				}
+				if ($times1 != -1 ){//aka we were able to get data from the db --pre midnight
+					$ret_handler = array();
+					array_push($ret_handler,$times1,NULL);
+					return $res_handler;
+				}
+				if ($times2 != -1 ){//aka we were able to get data from the db --post midnight 
+					$ret_handler = array();
+					array_push($ret_handler,NULL,$times2);
+					return $res_handler;
+				}
 				
-				
-				
-			
 			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight so just one query for us
 				$times = db_query($from,$to,$hour,$route,$con);
 				if ($times != -1 ){//aka we were able to get data from the db
