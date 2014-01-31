@@ -1,0 +1,61 @@
+/* Flatten das boostrap by node socket */ 
+.well, .navbar-inner, .popover, .btn, .tooltip, input, select, textarea, pre, .progress, .modal, .add-on, .alert, .table-bordered, .nav>.active>a, .dropdown-menu, .tooltip-inner, .badge, .label, .img-polaroid {
+  -moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	-webkit-border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
+	border-radius: 0px !important;
+	border-collapse: collapse !important;
+	background-image: none !important;
+}
+
+/* color: rgb(148, 13, 56);  MARRON COLOR 
+ */
+body{
+/* background-image:url("http://specials-images.forbesimg.com/imageserve/04fGgX67r8e0T/0x600.jpg%3Ffit%3Dscale%26background%3D000000"); */
+/*  background-color: #922; */
+background-size: cover;
+
+
+}
+
+button.btn.btn-default.go{
+display:block;
+margin:0 auto;
+margin-top:14em;
+}
+
+div.row.col-xs-3{
+background-color:red;
+
+}
+
+#full-screen{
+position: fixed; top: 0; right: 0; bottom: 0; left: 0; background-size: cover; background-position: 50% 50%; background-image: url("http://specials-images.forbesimg.com/imageserve/04fGgX67r8e0T/0x600.jpg%3Ffit%3Dscale%26background%3D000000");
+}
+div.row.x{
+display:block;
+margin:0 auto;
+width:80%;
+}
+
+/* body.#home.div.row.x.section.col-xs-3.div */
+col-xs-3.no_space{
+margin-left:0px;
+margin-right:0px;
+padding:0;
+}
+
+btn.btn-default.res{
+width:33%;
+}
+
+section.row.div.col-xs-12{
+color:red; 
+}
+
+
+btn-group.col-xs-12.col-sm-8.col-sm-offset-2{
+background-color:green;
+}
