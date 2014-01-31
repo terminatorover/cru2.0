@@ -44,11 +44,13 @@
 		
 	}			
 	
-	function db_query($departure,$destination,$hour,$given_route,$con){
+	function db_query($departure,$destination,$hour,$given_route,$con,$mid_night){
 	/**
 	input will be the point of departure and destination,given hour and route + db connection 
 	return will be a php raw handle 
 	**/
+	if (mid_night != True ){
+	
 		$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot > %s ",$departure,$destination,$given_route,(string)($hour -1));
 		$result  = mysqli_query($con,$the_query);
 		if (!$result){
@@ -57,7 +59,20 @@
 		}else{
 			return $result; 
 		}
+	}else{
+		$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot BETWEEN  1  AND 4",$departure,$destination,$given_route);
+		$result  = mysqli_query($con,$the_query);
+		if (!$result){
+			// echo "Database query failed for day query";
+			return -1 ;		
+		}else{
+			return $result; 
+		}
+	
 	}
+	
+	}
+	
 	
 	function from_db($day,$hour,$min,$route,$from,$to,$con){
 		/**
@@ -92,7 +107,7 @@
 		//one for the 11pm -12:59am range and the other from 1:00am to 4am. also note that past midnight 
 		//queries are allowed only for days Wen- Sat inclusive 
 		if ( $hour < 23){
-			$times = db_query($from,$to,$hour,$route,$con);
+			$times = db_query($from,$to,$hour,$route,$con,False);
 			if ($times != -1 ){//aka we were able to get data from the db
 				$ret_handler = array();
 				array_push($ret_handler,$times,NULL);
@@ -103,9 +118,9 @@
 				return $res_handler;
 			}
 		}else{// now we are dealing with midnight business 
-			if ( (2 < $day )&& ($day < 6)){//we first check if we are between W-Sat 
-				$times1 = db_query($from,$to,$hour,$route,$con);
-				$times2 = db_query($from,$to,1,$route,$con);
+			if ( (2 < $day )&& ($day < 7)){//we first check if we are between W-Sat 
+				$times1 = db_query($from,$to,$hour,$route,$con,False);
+				$times2 = db_query($from,$to,1,$route,$con,True);
 				if ( $times1 != -1 && $times2 != -1){//both pre and post midnight queries are successful
 					$ret_handler = array();
 					array_push($ret_handler,$times1,$times2);
@@ -123,7 +138,7 @@
 				}
 				
 			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight so just one query for us
-				$times = db_query($from,$to,$hour,$route,$con);
+				$times = db_query($from,$to,$hour,$route,$con,False);
 				if ($times != -1 ){//aka we were able to get data from the db
 					$ret_handler = array();
 					array_push($ret_handler,$times,NULL);
@@ -138,3 +153,9 @@
 	}
 	
 ?>
+
+
+
+
+
+
