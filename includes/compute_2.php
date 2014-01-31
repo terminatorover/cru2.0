@@ -53,19 +53,19 @@
 		$result  = mysqli_query($con,$the_query);
 		if (!$result){
 			// echo "Database query failed for day query";
-			return -1 ;
-			}
+			return -1 ;		
 		}else{
 			return $result; 
 		}
 	}
 	
-	function from_db($day,$hour,$min,$from,$to,$con){
+	function from_db($day,$hour,$min,$route,$from,$to,$con){
 		/**
 	Input----takes in the given time in 24 hour system and day, and place to go from 
-	and to get to + the db connection  
+	, to get to , and the route + the db connection  
 	Output --- returns a list of upto 2 php row handles depends if there is a request close to 
 	(11pm or within the midnight hour). else we just get one handle 
+	-----Note that we could return NULL,NULL if we don't get anything back(aka we can't establish db connection)
 	*/
 	//----------------perrson hall is visited twice in every path so if we find that frank is at 
 	//the from position then we pull out perrson_b else we'll pull out perrson_a column and the opposite 
@@ -89,11 +89,40 @@
 		}
 		
 		//first we check if it is between 11pm -12:59 am if not we just need one query else we need two
-		//one for the 11pm -12:59am range and the other from 1:00am to 4am
-		if ( $hour)
-		
-	
-	
+		//one for the 11pm -12:59am range and the other from 1:00am to 4am. also note that past midnight 
+		//queries are allowed only for days Wen- Sat inclusive 
+		if ( $hour < 23){
+			$times = db_query($from,$to,$hour,$route,$con);
+			if ($times != -1 ){//aka we were able to get data from the db
+				$ret_handler = array();
+				array_push($ret_handler,$times,NULL);
+				return $res_handler;
+			}else{
+				$ret_handler = array();
+				array_push($ret_handler,NULL,NULL);
+				return $res_handler;
+			}
+		}else{// now we are dealing with midnight business 
+			if ( (2 < $day )&& ($day < 6)){//we first check if we are between W-Sat 
+				$times1 = db_query($from,$to,$hour,$route,$con);
+				$times2 = db_query($from,$to,1,$route,$con);
+				
+				
+				
+			
+			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight so just one query for us
+				$times = db_query($from,$to,$hour,$route,$con);
+				if ($times != -1 ){//aka we were able to get data from the db
+					$ret_handler = array();
+					array_push($ret_handler,$times,NULL);
+					return $res_handler;
+				}else{
+					$ret_handler = array();
+					array_push($ret_handler,NULL,NULL);
+					return $res_handler;
+				}
+			}
+		}
 	}
 	
 ?>
