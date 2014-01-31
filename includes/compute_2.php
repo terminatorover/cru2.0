@@ -164,27 +164,48 @@
 		$min = $time_info['minutes'];
 		$day = $time_info['wday'];
 	}
-	$current_time = $hour.":".$min; 
+	 $current_time = $hour.":".$min; 
 
-	 $tset1 = $tset1_tset2[0];
-	 $tset2 = $tset1_tset2[1];
+	 $tset1 = $tset1_tset2[0];//results from every other query during 24 hours 
+	 $tset2 = $tset1_tset2[1];//results from  11pm - 12:59am 
+	 
 	 $clean_times = array();/// THIS WILL Be the array containing all of our times will be 
+	 
+	 
 	 if ($tset1 != NULL){//meaning we have now rows of time tuples(start/finish)---each row is a "tuple"
 		while ( $start_finish = mysqli_fetch_row($test1)){
 			$start_time =  $start_finish[0];
 			$finish_time =  $start_finish[1];
 			//we check if they are null or if the start time < current time if so we skip 
-			if ( $start_time != NULL && $finish_time!= NULL && t1_vs_t2($start_time,$current_time)){
+			if ( ($start_time != NULL ) && t1_vs_t2($start_time,$current_time)){
 				$sf = array();
 				array_push($sf,$start_time,$finish_time);
 				array_push($clean_times,$sf);
+			}elseif( $finish_time != NULL) {
+				$sf = array();
+				array_push($sf,$start_time,$finish_time);
+				array_push($clean_times,$sf);						
 			}else{
 				continue; 
 			}
 		}
-	 
 	 }
- 
+	 //----------------------------------
+	 if ($test2 != NULL){//test2 times are all ahead of their time because the only time we make this query is when we are 
+			// in the 11pm till 12:59am range as our current time , but the our list $test2 contains times after 1am
+			while($start_finish = mysqli_fetch_row($test1) ){
+			
+				$start_time =  $start_finish[0];
+				$finish_time =  $start_finish[1];
+				if ( ($start_time != NULL ) || ( $finish_time != NULL) ){//check if both of them are not null at the same time 
+					$sf = array();
+					array_push($sf,$start_time,$finish_time);
+					array_push($clean_times,$sf);			
+				}
+			}
+	 }
+	
+	return $clean_times;
  
  }
 
