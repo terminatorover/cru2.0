@@ -43,37 +43,37 @@
 		
 		
 	}			
-	
+//wrapper function for asking the db the types of queries that we are interested in 
 	function db_query($departure,$destination,$hour,$given_route,$con,$mid_night){
 	/**
 	input will be the point of departure and destination,given hour and route + db connection 
 	return will be a php raw handle 
 	**/
-	if (mid_night != True ){
-	
-		$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot > %s ",$departure,$destination,$given_route,(string)($hour -1));
-		$result  = mysqli_query($con,$the_query);
-		if (!$result){
-			// echo "Database query failed for day query";
-			return -1 ;		
+		if (mid_night != True ){
+		
+			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot > %s ",$departure,$destination,$given_route,(string)($hour -1));
+			$result  = mysqli_query($con,$the_query);
+			if (!$result){
+				// echo "Database query failed for day query";
+				return -1 ;		
+			}else{
+				return $result; 
+			}
 		}else{
-			return $result; 
-		}
-	}else{
-		$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot BETWEEN  1  AND 4",$departure,$destination,$given_route);
-		$result  = mysqli_query($con,$the_query);
-		if (!$result){
-			// echo "Database query failed for day query";
-			return -1 ;		
-		}else{
-			return $result; 
+			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot BETWEEN  1  AND 4",$departure,$destination,$given_route);
+			$result  = mysqli_query($con,$the_query);
+			if (!$result){
+				// echo "Database query failed for day query";
+				return -1 ;		
+			}else{
+				return $result; 
+			}
+		
 		}
 	
 	}
 	
-	}
-	
-	
+//filters and gets relevant info from db
 	function from_db($day,$hour,$min,$route,$from,$to,$con){
 		/**
 	Input----takes in the given time in 24 hour system and day, and place to go from 
@@ -86,6 +86,7 @@
 	//the from position then we pull out perrson_b else we'll pull out perrson_a column and the opposite 
 		if ($to == "Perrson_Hall"){
 			switch ($from){
+			
 				case "Frank_Dining_Hall":
 					$to = "Perrson_Hall_b";
 				break 
@@ -152,10 +153,43 @@
 		}
 	}
 	
-?>
+	
+		
+	
+//cuts out irrelevant information and turns the db arrays to php arrays 
+ function lean_array($tset1_tset2,$hour = NULL,$min =NULL){
+	if ($hour === NULL  || $min === NULL){
+		$time_info = getdate();
+		$hour = $time_info['hours'];
+		$min = $time_info['minutes'];
+		$day = $time_info['wday'];
+	}
+	$current_time = $hour.":".$min; 
+
+	 $tset1 = $tset1_tset2[0];
+	 $tset2 = $tset1_tset2[1];
+	 $clean_times = array();/// THIS WILL Be the array containing all of our times will be 
+	 if ($tset1 != NULL){//meaning we have now rows of time tuples(start/finish)---each row is a "tuple"
+		while ( $start_finish = mysqli_fetch_row($test1)){
+			$start_time =  $start_finish[0];
+			$finish_time =  $start_finish[1];
+			//we check if they are null or if the start time < current time if so we skip 
+			if ( $start_time != NULL && $finish_time!= NULL && t1_vs_t2($start_time,$current_time)){
+				$sf = array();
+				array_push($sf,$start_time,$finish_time);
+				array_push($clean_times,$sf);
+			}else{
+				continue; 
+			}
+		}
+	 
+	 }
+ 
+ 
+ }
 
 
 
 
 
-
+ ?>
