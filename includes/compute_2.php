@@ -158,6 +158,8 @@
 	
 //cuts out irrelevant information and turns the db arrays to php arrays 
  function lean_array($tset1_tset2,$hour = NULL,$min =NULL){
+ /**returns an array that contains "tuples" of start and finish times 
+ **/
 	if ($hour === NULL  || $min === NULL){
 		$time_info = getdate();
 		$hour = $time_info['hours'];
@@ -194,7 +196,6 @@
 	 if ($test2 != NULL){//test2 times are all ahead of their time because the only time we make this query is when we are 
 			// in the 11pm till 12:59am range as our current time , but the our list $test2 contains times after 1am
 			while($start_finish = mysqli_fetch_row($test1) ){
-			
 				$start_time =  $start_finish[0];
 				$finish_time =  $start_finish[1];
 				if ( ($start_time != NULL ) || ( $finish_time != NULL) ){//check if both of them are not null at the same time 
@@ -209,6 +210,65 @@
  
  }
 
+	function best_time($time_sets){
+	/**
+		given an array of times figures out the next best time if there is none returns the string NO PATH
+	
+	**/
+		$len_arr = count($time_sets) ;
+		$best_times = array();
+		if($len_arr == 0){//if we don't get any results from the cleaned array of start/finish times 
+			return "NO PATH";
+		}
+
+		for ( $itr = 0 ; $itr < $len_arr; $itr++){
+		
+			$start = $time_sets[0][0];
+			$finish = $time_sets[0][1];
+			$final = False ;
+	
+			if ($itr == ($len_arr - 1) ){//check if we are at the final set of start/finish times 
+				$start_next = $time_sets[1][0];//the next start time
+				$finish_next = $time_sets[1][1];//the next finish time
+			}else{
+				$start_next = NULL;
+				$finish_next = NULL;
+			}
+			//now we check for a possible set of accepted times and if we find we return it 
+			
+			//perfect scenario when the first time set includes both start/finish times not null and start < finish 
+			if ($finish != NULL && $start != NULL){
+				if ( t1_vs_t2($finish,$start)){
+					array_push($best_times,$start,$finish);
+					return $best_times;
+				}
+			}
+			//situation where you can hop on the cruiser in the next hour and get to your destination in the same hour 
+			//it is quite possible that you could jump on the cruiser now and do a trip PASS BY YOUR CURRENT DEPARTURE POING AGAIN 
+			//and then proceed to your destination but that doesn't make much sense unless you like to ride the cruiser and is better
+			//if you take the cruiser that next cruiser and gets to your destination and doge the situation where you will be in the 
+			//cruiser for hours(possibly) ----aka you are taking advantage of the fact that you are moving in the same direction as the 
+			// cruiser current 
+			if ($finish_next != NULL && $start_next != NULL){
+				if ( t1_vs_t2($finish_next,$start_next)){
+					array_push($best_times,$start_next,$finish_next);
+					return $best_times;
+				}
+			}
+			//scenario where the user needs to hop on the most recent cruiser and take a round trip to get the desired stop in an hour or so.
+			//this might happen for 1) the cruiser does rounds and you are trying to in the opposite direction that the cruiser is going 
+			//the cruiser doesn't go where you want it to at the current hour but will get there in the next hour
+			// 2)the cruiser just doesn't go to your destination at within the current hour and you can hop on the current cruiser at your 
+			//point of departure and get to your destination quicker than wait an "hour" because you are going against the cruiser current 
+			if ($finish_next != NULL && $start != NULL){
+				if ( t1_vs_t2($finish_next,$start_next)){
+					array_push($best_times,$start,$finish_next);
+					return $best_times;
+				}
+			}
+		}
+		retrun $best_times ;
+	}
 
 
 
