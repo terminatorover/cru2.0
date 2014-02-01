@@ -268,7 +268,7 @@
 	}
 
 	
-	function combine($departure,$destination,$hour=NULL,$min=NULL,$con){
+	function combine($departure,$destination,$hour = NULL,$min = NULL,$con){
 		/**
 		Takes in the the db connection point of departure/destination and time(if given by the user or will be
 		current time by default )and  puts the best time/s(and their respective cruiser) 
@@ -342,12 +342,30 @@
 				$time_of_departure = $show_me_how[0];
 				$time_of_arrival = $show_me_how[1];
 				$ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".$time_of_departure." and
-				get to ".$route_to_cruiser_name[$a_route]." at ".$time_of_arrival;
+				get to ".$for_user[$destination]." at ".$time_of_arrival;
 				array_push($genie,$ans);
 			}	
 		}
 		return $genie ;
 	}
-		
+	
+	
+	//NOW LETS GET THE DB CONNNECTION,DEPARTURE,DESTIATION POINTS 
+	//THIS COULD ALSO BE THE POINT WHERE YOU GET TIME INPUT FROM THE USER
+	$FROM =  $_GET["from"];
+	$TO = $_GET["to"];
+	//the db connection will be there (because this will be used as an include )
+	$list_of_results = combine($FROM,$TO,NULL,NULL,$con);
+	
+	echo "<ul class=\"nav nav-pills\">";
+		if ( count($list_of_results) == 0 ){
+			echo "<li><a href=\"#\">".THERE IS NO CRUISER THAT CAN GET YOU TO YOUR DESTINATION FROM YOUR POINT OF DEPARTURE AT THIS POINT."</a></li>";
+		}
+		foreach ($list_of_results as $answer){	
+			echo "<li><a href=\"#\">".$answer."</a></li>";
+		}
+	
+	echo "</ul>";
+
 	
  ?>
