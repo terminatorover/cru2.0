@@ -74,7 +74,7 @@
 	}
 	
 //filters and gets relevant info from db
-	function from_db($day,$hour,$min,$route,$from,$to,$con){
+	function from_db($day,$hour,$route,$from,$to,$con){
 		/**
 	Input----takes in the given time in 24 hour system and day, and place to go from 
 	, to get to , and the route + the db connection  
@@ -154,18 +154,15 @@
 	}
 	
 	
-		
+	
 	
 //cuts out irrelevant information and turns the db arrays to php arrays 
- function lean_array($tset1_tset2,$hour = NULL,$min =NULL){
- /**returns an array that contains "tuples" of start and finish times 
- **/
-	if ($hour === NULL  || $min === NULL){
-		$time_info = getdate();
-		$hour = $time_info['hours'];
-		$min = $time_info['minutes'];
-		$day = $time_info['wday'];
-	}
+	function lean_array($tset1_tset2,$hour,$min ){
+	 /**returns an array that contains "tuples" of start and finish times 
+	 **/
+	$hour = (string)$hour;
+	$min = (string )$min;
+
 	 $current_time = $hour.":".$min; 
 
 	 $tset1 = $tset1_tset2[0];//results from every other query during 24 hours 
@@ -211,9 +208,9 @@
  }
 
 	function best_time($time_sets){
+
 	/**
 		given an array of times figures out the next best time if there is none returns the string NO PATH
-	
 	**/
 		$len_arr = count($time_sets) ;
 		$best_times = array();
@@ -267,10 +264,90 @@
 				}
 			}
 		}
-		retrun $best_times ;
+		retrun "NO PATH";
 	}
 
-
-
-
+	
+	function combine($departure,$destination,$hour=NULL,$min=NULL,$con){
+		/**
+		Takes in the the db connection point of departure/destination and time(if given by the user or will be
+		current time by default )and  puts the best time/s(and their respective cruiser) 
+		into a list format "Cruiser A will leave DEPARTURE at ----AM/PM and get to DESTINATION 
+		at ---AM/PM 
+		**/
+		$time_info = getdate();//inquire the current date/time
+		if ($hour == NULL  || $min == NULL  ){	
+			$hour = $time_info['hours'];
+			$min = $time_info['minutes'];
+		}
+		//now we have our user input hours or just the current time + the day of the week 
+		$day = (int) $time_info['wday'];
+		$hour = (int) $hour;
+		$min = (int) $min;
+		
+		//each array represents a range of days and each item in the string is the name of the  
+		//possible route as seen in the db(each cruiser route is a table in the db)
+		$m_f = "ca_mf cb_mf cc_mf cd_mf ce_w_s";
+		$sun = "ca_sun cb_sun";
+		$sat = "ca_sat cb_sat ce_w_s";
+		//on a given day we select a set of possible routes
+		$week_routes =  array($sun,$m_f,$m_f,$m_f,$m_f,$m_f,$sat);//matches the day with the set of cruisers one might use 
+		$todays_cruisers = $week_routes[$day];//based on the given day we choose the set of possible cruiser related routes we can use
+		$todays_cruisers = explode(' ',$todays_cruisers);//make  a list out of them 
+		
+		
+		/** ---------------------------Now for some naming conversions (this will help to create the 
+		final string/s with the format Cruiser A will leave DEPARTURE at ----AM/PM and get to DESTINATION 
+		 at ---AM/PM ) 
+		**/
+		//NAME CONVERSTION FOR PLACES-----> give cleaned up user friendly version of the place names that were pulled from the db
+		$for_user = array();
+		$for_user["Frank_Dining_Hall"] = "Frank Dining Hall";
+		$for_user["Gate_House"]= "Gate House";
+		$for_user["Whitnall_Field"] = "Whitnall Field";
+		$for_user["Newell_Apartments"]= "Newell Apartments ";
+		$for_user["Newell_Apartments"] = "University Ct./Burch";
+		$for_user["110_Broad_St"] = "110 Broad St.";
+		$for_user["Kendrick_and_Broad"] = "Kendrick &amp; Broad ";
+		$for_user["Cutten_Hall"] = "Cutten Hall";
+		$for_user["Townhouses"] = "Townhouses";
+		$for_user["Bookstore"] = "Bookstore";
+		$for_user["SOMAC"] =  "SOMAC";
+		$for_user["Hamilton_Airport"] = "Hamilton Airport";
+		$for_user["Parrys_Plaza"] = "Parry&#39;s Plaza";
+		$for_user["Price_Chopper"] = "Price Chopper";
+		$for_user["Village_Green"] = "Village Green ";
+		$for_user["Parker_Apartments"] = "Parker Apartments";
+		$for_user["Case_Geyer_Library"] = "Case-Geyer Library";
+		//NAME CONVERSTION FOR PLACES-----> give cleaned up user friendly version of the  cruiser names
+		// that correspond to the database route names
+		
+		$route_to_cruiser_name["ca_sun"]="Cruiser A"; $route_to_cruiser_name["cb_sun"]="Cruiser B";
+		$route_to_cruiser_name["ca_sat"]="Cruiser A"; $route_to_cruiser_name["cb_sat"]="Cruiser B";
+		$route_to_cruiser_name["ce_w_s"]="Cruiser E";
+		
+		//now we iterate through the routes(that pertain to the current day) perform the 
+		//use the functions defined earlier to find the best start/stop times and 
+		
+		$genie = array(); //THIS IS WHERE THE STRINGS TELLING THE USER WHAT DO WILL BE STORED. THE MAGIC
+		
+		foreach ($todays_cruisers as $a_route){
+			//First we query the db appropriately and get the results back 
+			$two_db_cols = from_db($day,$hour,$route,$from,$to,$con);
+			$cleand_choices = lean_array($two_db_cols,$hour,$min);
+			$show_me_how = best_time($time_sets);
+			if ( $show_me_how == "NO PATH"){//then this cruiser can't get us where we want 
+				continue ;
+			}else{
+				$time_of_departure = $show_me_how[0];
+				$time_of_arrival = $show_me_how[1];
+				$ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".$time_of_departure." and
+				get to ".$route_to_cruiser_name[$a_route]." at ".$time_of_arrival;
+				array_push($genie,$ans);
+			}	
+		}
+		return $genie ;
+	}
+		
+	
  ?>
