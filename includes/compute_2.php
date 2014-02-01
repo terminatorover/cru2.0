@@ -89,7 +89,7 @@
 			
 				case "Frank_Dining_Hall":
 					$to = "Perrson_Hall_b";
-				break 
+					break ;
 				default:
 					$to = "Perrson_Hall_a";
 			}
@@ -98,7 +98,7 @@
 			switch ($to){
 				case "Frank_Dining_Hall":
 					$from = "Perrson_Hall_a";
-				break 
+					break ;
 				default:
 					$from = "Perrson_Hall_b";
 			}
@@ -264,7 +264,7 @@
 				}
 			}
 		}
-		retrun "NO PATH";
+		return "NO PATH";
 	}
 
 	
@@ -359,7 +359,7 @@
 	
 	echo "<ul class=\"nav nav-pills\">";
 		if ( count($list_of_results) == 0 ){
-			echo "<li><a href=\"#\">".THERE IS NO CRUISER THAT CAN GET YOU TO YOUR DESTINATION FROM YOUR POINT OF DEPARTURE AT THIS POINT."</a></li>";
+			echo "<li><a href=\"#\">"." THERE IS NO CRUISER THAT CAN GET YOU TO YOUR DESTINATION FROM YOUR POINT OF DEPARTURE AT THIS POINT "."</a></li>";
 		}
 		foreach ($list_of_results as $answer){	
 			echo "<li><a href=\"#\">".$answer."</a></li>";
