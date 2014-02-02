@@ -7,6 +7,32 @@ if (mysqli_connect_errno($con))
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
   
+  //helper functions checks if the difference between the two hours is >=2
+function t_diff($t1,$t2){
+		/**
+		This will come in handy in cases where for the fork case(aka hop on the cruiser now
+		drive around crossing over to the next hour zone and get off at your destination)
+		---specfically this will help us check if the waiting lasts for more than an hour 
+		if that is the case then we can't say we have a solution because in these cases the
+		cruiser stops running at some point (usually a lunch time scenario )
+		**/
+		echo "CARE";
+		echo "<br>";
+		$t1 = explode(":",$t1);
+		$t1h = (int) $t1[0];
+		$t1m = (int) $t1[1];
+		$t2 = explode(":",$t2);
+		$t2h = (int) $t2[0];
+		$t2m = (int) $t2[1];
+		echo "T1H ".$t1h."==================="." T2H".$t2h;
+		echo "<br>";
+		if (( $t1h-$t2h) >=2){
+			return True;
+		}else{return False;
+		
+		}
+}
+  
 //helper for the next function compares two set of times that are imputed as strings
 //returns true if the first time is after the second
 	function t1_vs_t2($t1,$t2){
@@ -240,8 +266,7 @@ if (mysqli_connect_errno($con))
 	/**
 		given an array of times figures out the next best time if there is none returns the string NO PATH
 	**/
-		echo "TWICE";
-		echo "<br>";
+
 		$len_arr = count($time_sets) ;
 		$best_times = array();
 		if($len_arr == 0){//if we don't get any results from the cleaned array of start/finish times 
@@ -249,9 +274,7 @@ if (mysqli_connect_errno($con))
 		}
 
 		for ( $itr = 0 ; $itr < $len_arr; $itr++){
-			echo "LOOP FOR finding the best times";
-			echo "<br>";
-			
+
 			$start = $time_sets[$itr][0];
 			$finish = $time_sets[$itr][1];
 			$final = False ;
@@ -300,8 +323,10 @@ if (mysqli_connect_errno($con))
 			if ($finish_next != NULL && $start != NULL){
 				if ( t1_vs_t2($finish_next,$start)){
 					echo "CASE 3 ---Fork ";
-					array_push($best_times,$start,$finish_next);
-					return $best_times;
+					if (!t_diff($finish_next,$start)){
+						array_push($best_times,$start,$finish_next);
+						return $best_times;
+					}
 				}
 			}
 		}
@@ -321,8 +346,14 @@ if (mysqli_connect_errno($con))
 			$hour = $time_info['hours'];
 			$min = $time_info['minutes'];
 		}
+		
+		//Artificial testing for time 
+		$hour = 10;
+		$min  = 30;
+		$day = 1;
+		
 		//now we have our user input hours or just the current time + the day of the week 
-		$day = (int) $time_info['wday'];
+		// $day = (int) $time_info['wday'];
 		$hour = (int) $hour;
 		$min = (int) $min;
 		
@@ -362,7 +393,8 @@ if (mysqli_connect_errno($con))
 		$for_user["Case_Geyer_Library"] = "Case-Geyer Library";
 		//NAME CONVERSTION FOR PLACES-----> give cleaned up user friendly version of the  cruiser names
 		// that correspond to the database route names
-		
+		$route_to_cruiser_name["ca_mf"]="Cruiser A"; $route_to_cruiser_name["cb_mf"]="Cruiser B"; 
+		$route_to_cruiser_name["cc_mf"]="Cruiser C"; $route_to_cruiser_name["cd_mf"]="Cruiser D";
 		$route_to_cruiser_name["ca_sun"]="Cruiser A"; $route_to_cruiser_name["cb_sun"]="Cruiser B";
 		$route_to_cruiser_name["ca_sat"]="Cruiser A"; $route_to_cruiser_name["cb_sat"]="Cruiser B";
 		$route_to_cruiser_name["ce_w_s"]="Cruiser E";
