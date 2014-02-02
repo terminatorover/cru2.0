@@ -92,10 +92,11 @@ function t_diff($t1,$t2){
 			
 			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot > %s ",$departure,$destination,$given_route,(string)($ts -1));//ts is for timeslot
 			$result  = mysqli_query($con,$the_query);
-			echo "THE QUERY ".$the_query; 
+			echo "DAY QUERY ".$the_query; 
 			echo "<br>";
 			if (!$result){
-				 echo "Database query failed for day query";
+				 echo "DAY Database query failed for day query";
+				 	echo "<br>";
 				return -1 ;		
 			}else{
 				return $result; 
@@ -104,9 +105,11 @@ function t_diff($t1,$t2){
 			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot BETWEEN  1  AND 4",$departure,$destination,$given_route);
 			$result  = mysqli_query($con,$the_query);
 
-
+			echo "NIGHT QUERY ".$the_query; 
+			echo "<br>";
 			if (!$result){
-				echo "Database query failed for day query";
+				echo "NIGHT Database query failed for day query";
+				echo "<br>";
 
 				return -1 ;		
 			}else{
@@ -241,7 +244,7 @@ function t_diff($t1,$t2){
 		 //----------------------------------
 		 if ($tset2 != NULL){//test2 times are all ahead of their time because the only time we make this query is when we are 
 				// in the 11pm till 12:59am range as our current time , but the our list $test2 contains times after 1am
-				while($start_finish = mysqli_fetch_row($test2) ){
+				while($start_finish = mysqli_fetch_row($tset2) ){
 					$start_time =  $start_finish[0];
 					$finish_time =  $start_finish[1];
 	
@@ -358,7 +361,7 @@ function t_diff($t1,$t2){
 		}
 		
 		//Artificial testing for time 
-		$hour = 10;
+		$hour = 23;
 		$min  = 21;
 		$day = 3;
 		
