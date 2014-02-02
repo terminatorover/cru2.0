@@ -1,5 +1,12 @@
 <?php 
 
+$con = mysqli_connect("localhost","robera","password","cruiser_app");
+
+if (mysqli_connect_errno($con))
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
+  
 //helper for the next function compares two set of times that are imputed as strings
 //returns true if the first time is after the second
 	function t1_vs_t2($t1,$t2){
@@ -47,14 +54,18 @@
 	function db_query($departure,$destination,$hour,$given_route,$con,$mid_night){
 	/**
 	input will be the point of departure and destination,given hour and route + db connection 
-	return will be a php raw handle 
+	return will be a set of php raw handles
 	**/
-		if (mid_night != True ){
-		
+		// echo $departure,$destination;
+		if ((!$mid_night) == True ){
+			
 			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot > %s ",$departure,$destination,$given_route,(string)($hour -1));
 			$result  = mysqli_query($con,$the_query);
+			 echo "NOT midnight ".$the_query ;
+			echo "<br>";
 			if (!$result){
-				// echo "Database query failed for day query";
+				 echo "Database query failed for day query";
+				 echo "<br>";
 				return -1 ;		
 			}else{
 				return $result; 
@@ -62,8 +73,11 @@
 		}else{
 			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot BETWEEN  1  AND 4",$departure,$destination,$given_route);
 			$result  = mysqli_query($con,$the_query);
+			 echo "midnight ".$the_query ;
+
 			if (!$result){
-				// echo "Database query failed for day query";
+				echo "Database query failed for day query";
+				echo "<br>";
 				return -1 ;		
 			}else{
 				return $result; 
@@ -103,20 +117,22 @@
 					$from = "Perrson_Hall_b";
 			}
 		}
-		
+			// echo "MY ROUTE IS ==============>  ".$route; 
+			 // echo "<br>";
 		//first we check if it is between 11pm -12:59 am if not we just need one query else we need two
 		//one for the 11pm -12:59am range and the other from 1:00am to 4am. also note that past midnight 
 		//queries are allowed only for days Wen- Sat inclusive 
 		if ( $hour < 23){
 			$times = db_query($from,$to,$hour,$route,$con,False);
 			if ($times != -1 ){//aka we were able to get data from the db
+				// echo "WE HAVE OUR DAY REULTS BACK ";
 				$ret_handler = array();
 				array_push($ret_handler,$times,NULL);
-				return $res_handler;
+				return $ret_handler;
 			}else{
 				$ret_handler = array();
 				array_push($ret_handler,NULL,NULL);
-				return $res_handler;
+				return $ret_handler;
 			}
 		}else{// now we are dealing with midnight business 
 			if ( (2 < $day )&& ($day < 7)){//we first check if we are between W-Sat 
@@ -125,17 +141,17 @@
 				if ( $times1 != -1 && $times2 != -1){//both pre and post midnight queries are successful
 					$ret_handler = array();
 					array_push($ret_handler,$times1,$times2);
-					return $res_handler;
+					return $ret_handler;
 				}
 				if ($times1 != -1 ){//aka we were able to get data from the db --pre midnight
 					$ret_handler = array();
 					array_push($ret_handler,$times1,NULL);
-					return $res_handler;
+					return $ret_handler;
 				}
 				if ($times2 != -1 ){//aka we were able to get data from the db --post midnight 
 					$ret_handler = array();
 					array_push($ret_handler,NULL,$times2);
-					return $res_handler;
+					return $ret_handler;
 				}
 				
 			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight so just one query for us
@@ -147,7 +163,7 @@
 				}else{
 					$ret_handler = array();
 					array_push($ret_handler,NULL,NULL);
-					return $res_handler;
+					return $ret_handler;
 				}
 			}
 		}
@@ -164,17 +180,22 @@
 	$min = (string )$min;
 
 	 $current_time = $hour.":".$min; 
-
 	 $tset1 = $tset1_tset2[0];//results from every other query during 24 hours 
 	 $tset2 = $tset1_tset2[1];//results from  11pm - 12:59am 
 	 
 	 $clean_times = array();/// THIS WILL Be the array containing all of our times will be 
 	 
+	 // echo $tset1,$tset2;
+	 echo "<br>";
 	 
 	 if ($tset1 != NULL){//meaning we have now rows of time tuples(start/finish)---each row is a "tuple"
+		// echo "HUSTON WE HAVE SOMETHING HERE";
+		// echo "<br>";
 		while ( $start_finish = mysqli_fetch_row($test1)){
 			$start_time =  $start_finish[0];
 			$finish_time =  $start_finish[1];
+			echo "Start ".$start_time." Finish ".$finish_time; 
+			echo "<br>";
 			//we check if they are null or if the start time < current time if so we skip 
 			if ( ($start_time != NULL ) && t1_vs_t2($start_time,$current_time)){
 				$sf = array();
@@ -195,6 +216,8 @@
 			while($start_finish = mysqli_fetch_row($test1) ){
 				$start_time =  $start_finish[0];
 				$finish_time =  $start_finish[1];
+				// echo "Start ".$start_time." Finish ".$finish_time; 
+				// echo "<br>";
 				if ( ($start_time != NULL ) || ( $finish_time != NULL) ){//check if both of them are not null at the same time 
 					$sf = array();
 					array_push($sf,$start_time,$finish_time);
@@ -333,7 +356,7 @@
 		
 		foreach ($todays_cruisers as $a_route){
 			//First we query the db appropriately and get the results back 
-			$two_db_cols = from_db($day,$hour,$route,$from,$to,$con);
+			$two_db_cols = from_db($day,$hour,$a_route,$departure,$destination,$con);
 			$cleand_choices = lean_array($two_db_cols,$hour,$min);
 			$show_me_how = best_time($time_sets);
 			if ( $show_me_how == "NO PATH"){//then this cruiser can't get us where we want 
@@ -354,6 +377,19 @@
 	//THIS COULD ALSO BE THE POINT WHERE YOU GET TIME INPUT FROM THE USER
 	$FROM =  $_GET["from"];
 	$TO = $_GET["to"];
+	
+	// $result  = mysqli_query($con,$the_query);
+	 // echo "NOT midnight ".$the_query ;
+	// echo "<br>";
+	// if (!$result){
+		 // echo "==========>  Database query failed for day query";
+		 // echo "<br>";
+
+	// }else{
+	 // echo "Database query Succeded";
+		 // echo "<br>";
+		
+	// }
 	//the db connection will be there (because this will be used as an include )
 	$list_of_results = combine($FROM,$TO,NULL,NULL,$con);
 	
@@ -367,5 +403,5 @@
 	
 	echo "</ul>";
 
-	
+	mysqli_close($con);
  ?>
