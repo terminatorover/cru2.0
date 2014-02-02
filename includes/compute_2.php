@@ -77,15 +77,23 @@ function t_diff($t1,$t2){
 		
 	}			
 //wrapper function for asking the db the types of queries that we are interested in 
-	function db_query($departure,$destination,$hour,$given_route,$con,$mid_night){
+	function db_query($departure,$destination,$hour,$min,$given_route,$con,$mid_night){
 	/**
 	input will be the point of departure and destination,given hour and route + db connection 
 	return will be a set of php raw handles
 	**/
+		if ( (int)$min >= 30){
+			$ts = $hour * 2;
+		}else{
+			$ts = ($hour *2) - 1 ;
+		}
+		
 		if ((!$mid_night) == True ){
 			
-			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot > %s ",$departure,$destination,$given_route,(string)($hour -1));
+			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot > %s ",$departure,$destination,$given_route,(string)($ts -1));//ts is for timeslot
 			$result  = mysqli_query($con,$the_query);
+			echo "THE QUERY ".$the_query; 
+			echo "<br>";
 			if (!$result){
 				 echo "Database query failed for day query";
 				return -1 ;		
@@ -145,7 +153,7 @@ function t_diff($t1,$t2){
 		//queries are allowed only for days Wen- Sat inclusive 
 		
 		if ( $hour < 23){
-			$times = db_query($from,$to,$hour,$route,$con,False);
+			$times = db_query($from,$to,$hour,$min,$route,$con,False);
 			if ($times != -1 ){//aka we were able to get data from the db
 				$ret_handler = array();
 				array_push($ret_handler,$times,NULL);
@@ -157,8 +165,8 @@ function t_diff($t1,$t2){
 			}
 		}else{// now we are dealing with midnight business 
 			if ( (2 < $day )&& ($day < 7)){//we first check if we are between W-Sat 
-				$times1 = db_query($from,$to,$hour,$route,$con,False);
-				$times2 = db_query($from,$to,1,$route,$con,True);
+				$times1 = db_query($from,$to,$hour,$min,$route,$con,False);
+				$times2 = db_query($from,$to,1,NULL,$route,$con,True);
 				if ( $times1 != -1 && $times2 != -1){//both pre and post midnight queries are successful
 					$ret_handler = array();
 					array_push($ret_handler,$times1,$times2);
@@ -176,7 +184,7 @@ function t_diff($t1,$t2){
 				}
 				
 			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight so just one query for us
-				$times = db_query($from,$to,$hour,$route,$con,False);
+				$times = db_query($from,$to,$hour,$min,$route,$con,False);
 				if ($times != -1 ){//aka we were able to get data from the db
 					$ret_handler = array();
 					array_push($ret_handler,$times,NULL);
@@ -233,12 +241,14 @@ function t_diff($t1,$t2){
 		 //----------------------------------
 		 if ($tset2 != NULL){//test2 times are all ahead of their time because the only time we make this query is when we are 
 				// in the 11pm till 12:59am range as our current time , but the our list $test2 contains times after 1am
-				while($start_finish = mysqli_fetch_row($test1) ){
+				while($start_finish = mysqli_fetch_row($test2) ){
 					$start_time =  $start_finish[0];
 					$finish_time =  $start_finish[1];
-
+	
 					if ( ($start_time != NULL ) || ( $finish_time != NULL) ){//check if both of them are not null at the same time 
 						$sf = array();
+						echo $start_time."----".$finish_time;
+						echo "<br>";
 						array_push($sf,$start_time,$finish_time);
 						array_push($clean_times,$sf);			
 					}
@@ -349,8 +359,8 @@ function t_diff($t1,$t2){
 		
 		//Artificial testing for time 
 		$hour = 10;
-		$min  = 30;
-		$day = 1;
+		$min  = 21;
+		$day = 3;
 		
 		//now we have our user input hours or just the current time + the day of the week 
 		// $day = (int) $time_info['wday'];
@@ -417,7 +427,10 @@ function t_diff($t1,$t2){
 				$time_of_departure = $show_me_how[0];
 				$time_of_arrival = $show_me_how[1];
 				$ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".standard_time($time_of_departure)." and
-				get to ".$for_user[$destination]." at ".standard_time($time_of_arrival);
+				get to ".$for_user[$destination]." at ".standard_time($time_of_arrival);		
+				
+				// $ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".$time_of_departure." and
+				// get to ".$for_user[$destination]." at ".$time_of_arrival;
 				array_push($genie,$ans);
 				
 			}	
