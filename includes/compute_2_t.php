@@ -198,19 +198,25 @@ function t_diff($t1,$t2){
 			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight 
 			//so if its currently pre midnight and there is a cruiser that starts pre midnight and stops pre midnight or almost after
 			//use the that.
-				if ( $hour >=23 ){
-				
-					$times = db_query($from,$to,$hour,$min,$route,$con,False);
-					if ($times != -1 ){//aka we were able to get data from the db
-						$ret_handler = array();
-						array_push($ret_handler,$times,NULL);
+					if ( ($hour >= 23)){
+						if(($hour == 23) ) {
+						
+							$times = db_query($from,$to,$hour,$min,$route,$con,False);
+							if ($times != -1 ){//aka we were able to get data from the db
+								$ret_handler = array();
+								array_push($ret_handler,$times,NULL);
 
-					}else{
-						$ret_handler = array();
-						array_push($ret_handler,NULL,NULL);
-
+							}else{
+								$ret_handler = array();
+								array_push($ret_handler,NULL,NULL);
+							}
+						}else{
+								$ret_handler = array();
+								array_push($ret_handler,NULL,NULL);
+							}
+					
 					}
-				}else{
+					else{
 			//if its past midnight already then only one query for us and has to start past 7am of the next day 
 					$times = db_query($from,$to,6,5,$route,$con,False);
 					echo "<br>";
@@ -218,6 +224,7 @@ function t_diff($t1,$t2){
 					echo "<br>";
 					
 					if ($times != -1 ){//aka we were able to get data from the db
+					
 						$ret_handler = array();
 						array_push($ret_handler,$times,NULL);
 
@@ -407,7 +414,7 @@ function t_diff($t1,$t2){
 		}
 		
 		//Artificial testing for time 
-		$hour = 11;
+		$hour = 1;
 		$min  = 10;
 		$day = 1;
 		
