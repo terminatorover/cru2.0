@@ -226,8 +226,8 @@ function t_diff($t1,$t2){
 			while ( $start_finish = mysqli_fetch_row($tset1)){
 				$start_time =  $start_finish[0];
 				$finish_time =  $start_finish[1];
-				echo $start_time."++++++".$current_time;
-					echo "<br>";		
+				// echo $start_time."++++++".$current_time;
+					// echo "<br>";		
 				//we check if they are null or if the start time < current time if so we skip 
 				if ( ($start_time != NULL ) && t1_vs_t2($start_time,$current_time)){
 					$sf = array();
@@ -266,12 +266,12 @@ function t_diff($t1,$t2){
 				}
 		 }
 		 $len_arr = count($clean_times);
-		 echo $len_arr;
+		 // echo $len_arr;
 		 echo "<br>";
 		 for ( $itr = 0; $itr < $len_arr ; $itr ++){
 			$start = $clean_times[$itr][0];
 			$finish = $clean_times[$itr][1];
-			echo "START: ".$start." FINISH ".$finish;
+			echo "START:: ".$start." FINISH:: ".$finish;
 			echo "<br>";
 		 }
 		
@@ -321,7 +321,11 @@ function t_diff($t1,$t2){
 					echo "CASE 1";
 					array_push($best_times,$start,$finish);
 					return $best_times;
-				}
+				}elseif ($start == 24){//check for the midnight scenario 
+						
+						array_push($best_times,$start,$finish);
+						return $best_times;
+					}
 			}
 			//situation where you can hop on the cruiser in the next hour and get to your destination in the same hour 
 			//it is quite possible that you could jump on the cruiser now and do a trip PASS BY YOUR CURRENT DEPARTURE POING AGAIN 
@@ -334,13 +338,18 @@ function t_diff($t1,$t2){
 					echo "CASE 2";
 					array_push($best_times,$start_next,$finish_next);
 					return $best_times;
-				}
+				}elseif ($start_next == 24){//check for the midnight scenario 
+						
+						array_push($best_times,$start_next,$finish_next);
+						return $best_times;
+					}
 			}
 			//scenario where the user needs to hop on the most recent cruiser and take a round trip to get the desired stop in an hour or so.
 			//this might happen for 1) the cruiser does rounds and you are trying to in the opposite direction that the cruiser is going 
 			//the cruiser doesn't go where you want it to at the current hour but will get there in the next hour
 			// 2)the cruiser just doesn't go to your destination at within the current hour and you can hop on the current cruiser at your 
 			//point of departure and get to your destination quicker than wait an "hour" because you are going against the cruiser current 
+			// echo "--------->".$start."+++++>".$finish_next; 
 			if ($finish_next != NULL && $start != NULL){
 				if ( t1_vs_t2($finish_next,$start)){
 					echo "CASE 3 ---Fork ";
@@ -348,9 +357,14 @@ function t_diff($t1,$t2){
 						array_push($best_times,$start,$finish_next);
 						return $best_times;
 					}
+				}elseif ($start == 24){//check for the midnight scenario 
+						
+						array_push($best_times,$start,$finish_next);
+						return $best_times;
+					}
 				}
 			}
-		}
+		
 		return "NO PATH";
 	}
 
