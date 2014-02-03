@@ -361,9 +361,9 @@ function t_diff($t1,$t2){
 		}
 		
 		//Artificial testing for time 
-		$hour = 23;
-		$min  = 21;
-		$day = 3;
+		// $hour = 23;
+		// $min  = 21;
+		// $day = 3;
 		
 		//now we have our user input hours or just the current time + the day of the week 
 		// $day = (int) $time_info['wday'];

@@ -155,7 +155,7 @@ function t_diff($t1,$t2){
 		//one for the 11pm -12:59am range and the other from 1:00am to 4am. also note that past midnight 
 		//queries are allowed only for days Wen- Sat inclusive 
 		
-		if ( $hour < 23){
+		if ( ($hour < 23 ) && ( $hour >= 4 )){
 			$times = db_query($from,$to,$hour,$min,$route,$con,False);
 			if ($times != -1 ){//aka we were able to get data from the db
 				$ret_handler = array();
@@ -167,7 +167,10 @@ function t_diff($t1,$t2){
 
 			}
 		}else{// now we are dealing with midnight business 
-			if ( (2 < $day )&& ($day < 7)){//we first check if we are between W-Sat 
+			if ( (2 < $day ) && ($day < 7)){//we first check if we are between W-Sat 
+				echo "<br>";
+				echo "I SOULDN'T BE SEEING THIS MESSAGE";
+				echo "<br>";
 				$times1 = db_query($from,$to,$hour,$min,$route,$con,False);
 				$times2 = db_query($from,$to,1,NULL,$route,$con,True);
 				if ( ($times1 != -1)  && ($times2 != -1)){//both pre and post midnight queries are successful
@@ -192,16 +195,37 @@ function t_diff($t1,$t2){
 
 				}
 				
-			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight so just one query for us
-				$times = db_query($from,$to,$hour,$min,$route,$con,False);
-				if ($times != -1 ){//aka we were able to get data from the db
-					$ret_handler = array();
-					array_push($ret_handler,$times,NULL);
+			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight 
+			//so if its currently pre midnight and there is a cruiser that starts pre midnight and stops pre midnight or almost after
+			//use the that.
+				if ( $hour >=23 ){
+				
+					$times = db_query($from,$to,$hour,$min,$route,$con,False);
+					if ($times != -1 ){//aka we were able to get data from the db
+						$ret_handler = array();
+						array_push($ret_handler,$times,NULL);
 
+					}else{
+						$ret_handler = array();
+						array_push($ret_handler,NULL,NULL);
+
+					}
 				}else{
-					$ret_handler = array();
-					array_push($ret_handler,NULL,NULL);
+			//if its past midnight already then only one query for us and has to start past 7am of the next day 
+					$times = db_query($from,$to,6,5,$route,$con,False);
+					echo "<br>";
+					echo "THIS SHOULD BE GETTING HIT";
+					echo "<br>";
+					
+					if ($times != -1 ){//aka we were able to get data from the db
+						$ret_handler = array();
+						array_push($ret_handler,$times,NULL);
 
+					}else{
+						$ret_handler = array();
+						array_push($ret_handler,NULL,NULL);
+
+					}
 				}
 			}
 		}
@@ -383,9 +407,9 @@ function t_diff($t1,$t2){
 		}
 		
 		//Artificial testing for time 
-		$hour = 23;
-		$min  = 50;
-		$day = 4;
+		$hour = 11;
+		$min  = 10;
+		$day = 1;
 		
 		//now we have our user input hours or just the current time + the day of the week 
 		// $day = (int) $time_info['wday'];
