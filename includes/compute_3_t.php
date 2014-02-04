@@ -57,7 +57,7 @@
 	<div id="full-screen"></div>
 	<section class="row">
 	
-	<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center; position: fixed;
+	<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center;
 top: -1px; " >CRUISER APP</h2>
 	</section>
 	
@@ -66,12 +66,19 @@ top: -1px; " >CRUISER APP</h2>
 		<?php 
 error_reporting(E_ERROR);
 
-$hostname = 'localhost:3306';
-$username = "robera";
-$password = "password";
-$database = "cruiser_app";
-$port = null;
-$socket = null;
+// $hostname = 'localhost:3306';
+// $username = "robera";
+// $password = "password";
+// $database = "cruiser_app";
+// $port = null;
+// $socket = null;
+
+	$hostname = null;
+	$username = "root";
+	$password = "";
+	$database = "cruiser_app";
+	$port = null;
+	$socket = "/cloudsql/colgate-cruiser:get-cru4";
 
 $con = new mysqli($hostname,$username,$password,$database,$port,$socket);
 
@@ -162,6 +169,7 @@ function t_diff($t1,$t2){
 		}else{
 			$ts = ($hour *2) - 1 ;
 		}
+		// echo "ROUTE ".$given_route;
 		
 		if ((!$mid_night) == True ){
 			
@@ -180,8 +188,8 @@ function t_diff($t1,$t2){
 			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot BETWEEN  1  AND 4",$departure,$destination,$given_route);
 			$result  = mysqli_query($con,$the_query);
 
-			echo "NIGHT QUERY ".$the_query; 
-			echo "<br>";
+			// echo "NIGHT QUERY ".$the_query; 
+			// echo "<br>";
 			if (!$result){
 				echo "NIGHT Database query failed for day query";
 				echo "<br>";
@@ -209,6 +217,7 @@ function t_diff($t1,$t2){
 	//the from position then we pull out perrson_b else we'll pull out perrson_a column and the opposite 
 	// echo "OK----------------------";
 	// echo "<br>";
+
 		if ($to == "Perrson_Hall"){
 			switch ($from){
 			
@@ -248,30 +257,30 @@ function t_diff($t1,$t2){
 
 				
 			if ( (2 < $day ) && ($day < 7)){//we first check if we are between W-Sat 
-				echo "<br>";
-				echo "I SOULDN'T BE SEEING THIS MESSAGE";
-				echo "<br>";
+				// echo "<br>";
+				// echo "I SOULDN'T BE SEEING THIS MESSAGE";
+				// echo "<br>";
 				$times1 = db_query($from,$to,$hour,$min,$route,$con,False);
 				$times2 = db_query($from,$to,1,NULL,$route,$con,True);
 				if ( ($times1 != -1)  && ($times2 != -1)){//both pre and post midnight queries are successful
 						$ret_handler = array();
-						echo "WTFFFFFFFFFFFFFFFFFFFFFFF1";
-						echo "<br>";
+						// // echo "WTFFFFFFFFFFFFFFFFFFFFFFF1";
+						// echo "<br>";
 						array_push($ret_handler,$times1,$times2);
 
 					}
 					elseif ($times1 != -1 ){//aka we were able to get data from the db --pre midnight
 						$ret_handler = array();
 						array_push($ret_handler,$times1,NULL);
-											echo "WTFFFFFFFFFFFFFFFFFFFFFFF2";
-						echo "<br>";
+											// echo "WTFFFFFFFFFFFFFFFFFFFFFFF2";
+						// echo "<br>";
 
 					}
 					elseif ($times2 != -1 ){//aka we were able to get data from the db --post midnight 
 						$ret_handler = array();
 						array_push($ret_handler,NULL,$times2);
-											echo "WTFFFFFFFFFFFFFFFFFFFFFFF3";
-						echo "<br>";
+											// echo "WTFFFFFFFFFFFFFFFFFFFFFFF3";
+						// echo "<br>";
 
 					}
 				
@@ -344,8 +353,8 @@ function t_diff($t1,$t2){
 				}
 				elseif( ($start_time == NULL)  && ($finish_time != NULL)) {
 					$sf = array();
-					echo $start_time."----".$finish_time;
-					echo "<br>";
+					// echo $start_time."----".$finish_time;
+					// echo "<br>";
 					array_push($sf,$start_time,$finish_time);
 					array_push($clean_times,$sf);						
 				}
@@ -488,12 +497,12 @@ function t_diff($t1,$t2){
 		}
 		
 		// //Artificial testing for time 
-		 $hour = 24;
-		 $min  = 10;
-		 $day = 2;
+		 // $hour = 24;
+		 // $min  = 10;
+		 // $day = 3;
 		
 		//now we have our user input hours or just the current time + the day of the week 
-		// $day = (int) $time_info['wday'];
+		$day = (int) $time_info['wday'];
 		$hour = (int) $hour;
 		$min = (int) $min;
 		
@@ -545,7 +554,7 @@ function t_diff($t1,$t2){
 		$genie = array(); //THIS IS WHERE THE STRINGS TELLING THE USER WHAT DO WILL BE STORED. THE MAGIC
 		
 		foreach ($todays_cruisers as $a_route){
-					// echo $a_route." *************************************************************************************";
+					// echo "----------".$a_route." *************************************************************************************";
 				// echo "<br>";
 			//First we query the db appropriately and get the results back 
 			$data = from_db($day,$hour,$a_route,$departure,$destination,$con,$hour,$min);
