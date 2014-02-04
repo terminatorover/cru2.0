@@ -66,19 +66,19 @@ top: -1px; " >CRUISER APP</h2>
 		<?php 
 error_reporting(E_ERROR);
 
-// $hostname = 'localhost:3306';
-// $username = "robera";
-// $password = "password";
-// $database = "cruiser_app";
-// $port = null;
-// $socket = null;
+$hostname = 'localhost:3306';
+$username = "robera";
+$password = "password";
+$database = "cruiser_app";
+$port = null;
+$socket = null;
 
-	$hostname = null;
-	$username = "root";
-	$password = "";
-	$database = "cruiser_app";
-	$port = null;
-	$socket = "/cloudsql/colgate-cruiser:get-cru4";
+	// $hostname = null;
+	// $username = "root";
+	// $password = "";
+	// $database = "cruiser_app";
+	// $port = null;
+	// $socket = "/cloudsql/colgate-cruiser:get-cru4";
 
 $con = new mysqli($hostname,$username,$password,$database,$port,$socket);
 
@@ -490,11 +490,14 @@ function t_diff($t1,$t2){
 		into a list format "Cruiser A will leave DEPARTURE at ----AM/PM and get to DESTINATION 
 		at ---AM/PM 
 		**/
+		date_default_timezone_set("America/New_York");
 		$time_info = getdate();//inquire the current date/time
 		if ($hour == NULL  || $min == NULL  ){	
 			$hour = $time_info['hours'];
 			$min = $time_info['minutes'];
 		}
+		
+
 		
 		// //Artificial testing for time 
 		 // $hour = 24;
@@ -506,6 +509,12 @@ function t_diff($t1,$t2){
 		$hour = (int) $hour;
 		$min = (int) $min;
 		
+				echo "HOUR ".$hour;
+		echo "<br>";
+		echo "DAY ".$day;
+		echo "<br>";
+		echo "MINUTE ".$minute;
+		echo "<br>";
 		//each array represents a range of days and each item in the string is the name of the  
 		//possible route as seen in the db(each cruiser route is a table in the db)
 		$m_f = "ca_mf cb_mf cc_mf cd_mf ce_w_s";
