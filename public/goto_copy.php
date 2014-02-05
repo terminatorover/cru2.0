@@ -255,14 +255,15 @@ function t_diff($t1,$t2){
 
 					}
 				
-			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight 
+			}else{//we are not in the range of Thur-Sat and hence no cruisers run past midnight 
 			//so if its currently pre midnight and there is a cruiser that starts pre midnight and stops pre midnight or almost after
 			//use the that.
 								// if ( ($hour >= 23)){
-									if(($hour == 23) ) {
-									
+									if(($hour == 23)  ) {
+									// echo "I SHOULD BE SEEING THIS ";
 										$times = db_query($from,$to,$hour,$min,$route,$con,False);
 										if ($times != -1 ){//aka we were able to get data from the db
+										// echo "GOT IT";
 											$ret_handler = array();
 											array_push($ret_handler,$times,NULL);
 
@@ -276,8 +277,7 @@ function t_diff($t1,$t2){
 										// echo "THIS SHOULD BE GETTING HIT";
 										// echo "<br>";
 										
-										if ($times != -1 ){//aka we were able to get data from the db
-										
+										if ($times != -1 ){//aka we were able to get data from the db										
 											$ret_handler = array();
 											array_push($ret_handler,$times,NULL);
 
@@ -468,9 +468,9 @@ function t_diff($t1,$t2){
 			$min = $time_info['minutes'];
 		}
 		
-			  $hour = 24;
-		 $min  = 10;
-		  $day = 6;
+			  // $hour = 24;
+		 // $min  = 10;
+		  // $day = 3;
 		//because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
 		if ($day == 6 && (( $hour < 4 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
@@ -483,9 +483,6 @@ function t_diff($t1,$t2){
 		
 		}
 		
-		echo "TODAY is ---".$day;
-		echo "<br>";
-		
 		
 		
 		// //Artificial testing for time 
@@ -493,15 +490,15 @@ function t_diff($t1,$t2){
 		 // $min  = 10;
 		  // $day = 4;
 		
-		//now we have our user input hours or just the current time + the day of the week 
-		// $day = (int) $time_info['wday'];
-		// $hour = (int) $hour;
-		// $min = (int) $min;
+		// now we have our user input hours or just the current time + the day of the week 
+		$day = (int) $time_info['wday'];
+		$hour = (int) $hour;
+		$min = (int) $min;
 		
 				// echo "HOUR ".$hour;
 		// echo "<br>";
-		// echo "DAY ".$day;
-		// echo "<br>";
+		echo "DAY ".$day;
+		echo "<br>";
 		// echo "MINUTE ".$minute;
 		// echo "<br>";
 		//each array represents a range of days and each item in the string is the name of the  
