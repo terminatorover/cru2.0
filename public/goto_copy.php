@@ -37,19 +37,13 @@ top: -1px; " >CRUISER APP</h2>
 		<?php 
 error_reporting(E_ERROR);
 
-$hostname = 'localhost:3306';
-$username = "robera";
-$password = "password";
-$database = "cruiser_app";
-$port = null;
-$socket = null;
+// $hostname = 'localhost:3306';
+// $username = "robera";
+// $password = "password";
+// $database = "cruiser_app";
+// $port = null;
+// $socket = null;
 
-	// $hostname = null;
-	// $username = "root";
-	// $password = "";
-	// $database = "cruiser_app";
-	// $port = null;
-	// $socket = "/cloudsql/colgate-cruiser:get-cru4";
 
 $con = new mysqli($hostname,$username,$password,$database,$port,$socket);
 
