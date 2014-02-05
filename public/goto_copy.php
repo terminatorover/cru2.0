@@ -468,10 +468,10 @@ function t_diff($t1,$t2){
 			$min = $time_info['minutes'];
 		}
 		
-			  // $hour = 24;
-		 // $min  = 10;
+		 // $hour = 24;
+		 // $min  = 01;
 		  // $day = 3;
-		//because of the way the schedule is setup Sat 1am-4am is still Friday 
+		// because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
 		if ($day == 6 && (( $hour < 4 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
 			$day = 5;
@@ -497,8 +497,8 @@ function t_diff($t1,$t2){
 		
 				// echo "HOUR ".$hour;
 		// echo "<br>";
-		echo "DAY ".$day;
-		echo "<br>";
+		// echo "DAY ".$day;
+		// echo "<br>";
 		// echo "MINUTE ".$minute;
 		// echo "<br>";
 		//each array represents a range of days and each item in the string is the name of the  
@@ -562,6 +562,11 @@ function t_diff($t1,$t2){
 
 				$time_of_departure = $show_me_how[0];
 				$time_of_arrival = $show_me_how[1];
+				//This check is for the quirky situation on M/T at 11pm-12am range when we can't use the bus if our 
+				//arrival time (at destination )is after 12am 
+				if (( ( $day < 3) &&( $day > 0))  && t1_vs_t2($time_of_arrival,"23:59")){
+						continue ;
+				}
 				$ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".standard_time($time_of_departure)." and
 				get to ".$for_user[$destination]." at ".standard_time($time_of_arrival);		
 				
