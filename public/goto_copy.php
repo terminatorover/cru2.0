@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -43,6 +41,8 @@ error_reporting(E_ERROR);
 // $database = "cruiser_app";
 // $port = null;
 // $socket = null;
+
+	
 
 
 $con = new mysqli($hostname,$username,$password,$database,$port,$socket);
@@ -129,6 +129,7 @@ function t_diff($t1,$t2){
 	input will be the point of departure and destination,given hour and route + db connection 
 	return will be a set of php raw handles
 	**/
+		
 		if ( (int)$min >= 30){
 			$ts = $hour * 2;
 		}else{
@@ -464,7 +465,7 @@ function t_diff($t1,$t2){
 		
 		 // $hour = 24;
 		 // $min  = 01;
-		  // $day = 3;
+		  // $day = 4;
 		// because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
 		if ($day == 6 && (( $hour < 4 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
@@ -516,7 +517,6 @@ function t_diff($t1,$t2){
 		$for_user["Gate_House"]= "Gate House";
 		$for_user["Whitnall_Field"] = "Whitnall Field";
 		$for_user["Newell_Apartments"]= "Newell Apartments ";
-		$for_user["Newell_Apartments"] = "University Ct./Burch";
 		$for_user["110_Broad_St"] = "110 Broad St.";
 		$for_user["Kendrick_and_Broad"] = "Kendrick &amp; Broad ";
 		$for_user["Cutten_Hall"] = "Cutten Hall";
@@ -530,6 +530,8 @@ function t_diff($t1,$t2){
 		$for_user["Parker_Apartments"] = "Parker Apartments";
 		$for_user["Case_Geyer_Library"] = "Case-Geyer Library";
 		$for_user["Perrson_Hall"] = "Perrson Hall";
+		$for_user["University_Ct_Burch"] = "University Ct./Burch";
+		
 
 		//NAME CONVERSTION FOR PLACES-----> give cleaned up user friendly version of the  cruiser names
 		// that correspond to the database route names

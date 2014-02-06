@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -36,13 +37,13 @@
 	 
 			<!-- ----------------------------------------------------------------------------------------------------------------->
 			<div class="row">
-				<div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3">
+				<div class="col-xs-9 col-xs-offset-1 col-sm-6 col-sm-offset-3">
 					<div  style = " text-align: center; margin-top:2em; font-family: 'Graduate', cursive;"><span style=" color: white; font-size:large; text-shadow: black 0.1em 0.1em 0.2em ;">FROM</span></div>
 
 					<section  >						
 							<div class="btn-group  " style="width:100%;padding-right: 0px; padding-bottom: 1.6em; padding-left:0px; text-shadow: black 0.1em 0.1em 0.2em;"  >
 							  <!-- UPPER CAMPUS-->
-							  <button type="button" class="btn btn-default res"  style="width: 100%;; background-color:#B0312A; font-family: 'Graduate', cursive; border: 0px; padding-bottom: 1.6em; padding-top: 1.5em;padding-top: 1.5em;">
+							  <button type="button" class="btn btn-default res"  style="padding-right: 14px;width: 100%;; background-color:#B0312A; font-family: 'Graduate', cursive; border: 0px; padding-bottom: 1.6em; padding-top: 1.5em;padding-top: 1.5em;">
 								 <select class="form-control" name="from">
 											<option value="Perrson_Hall" >Perrson Hall</option>
 											<option value="Frank_Dining_Hall">Frank Dining Hall</option>
@@ -73,8 +74,8 @@
 
 						<div class="btn-group " style="width:100%;padding-right: 0px; padding-bottom: 1.6em; padding-left:0px; text-shadow: black 0.1em 0.1em 0.2em;"  >
 						 
-						  <button type="button" class="btn btn-default res"  style=" width: 100%; background-color:#B0312A; font-family: 'Graduate', cursive; border: 0px; padding-bottom: 1.6em; padding-top: 1.5em;padding-top: 1.5em;">
-							 <select class="form-control" name="from">
+						  <button type="button" class="btn btn-default res"  style="padding-right: 14px; width: 100%; background-color:#B0312A; font-family: 'Graduate', cursive; border: 0px; padding-bottom: 1.6em; padding-top: 1.5em;padding-top: 1.5em;">
+							 <select class="form-control" name="to">
 										<option value="Perrson_Hall" >Perrson Hall</option>
 										<option value="Frank_Dining_Hall">Frank Dining Hall</option>
 										<option value="Gate_House">Gate House</option>
