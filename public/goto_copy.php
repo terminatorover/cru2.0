@@ -472,9 +472,9 @@ function t_diff($t1,$t2){
 			$min = $time_info['minutes'];
 		}
 		// &&&
-		 $hour = 24;
-		 $min  = 19;
-		  $day = 0;
+		 $hour = 1;
+		 $min  = 20;
+		  $day = 6;
 		// because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
 		if ($day == 6 && (( $hour < 4 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
