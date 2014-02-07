@@ -26,8 +26,9 @@
 	<div id="full-screen"></div>
 	<section class="row">
 	
-	<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center;
-top: -1px; " >GATE CRUISER</h2>
+		<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center;
+			top: -1px; " >GATE CRUISER</h1>
+	
 	</section>
 	
 	<div class="row">
@@ -35,14 +36,29 @@ top: -1px; " >GATE CRUISER</h2>
 		<?php 
 error_reporting(E_ERROR);
 
-// $hostname = 'localhost:3306';
+	// $hostname = null;
+	// $username = "root";
+	// $password = "";
+	// $database = "cruiser_app";
+	// $port = null;
+	// $socket = "/cloudsql/colgate-cruiser:get-cru4";
+	$hostname = 'localhost:3306';
+$username = "robera";
+$password = "password";
+$database = "cruiser_app";
+$port = null;
+$socket = null;
+
+
+	
+
+	// $hostname = 'localhost:3306';
 // $username = "robera";
 // $password = "password";
 // $database = "cruiser_app";
 // $port = null;
 // $socket = null;
 
-	
 
 
 $con = new mysqli($hostname,$username,$password,$database,$port,$socket);
@@ -463,7 +479,7 @@ function t_diff($t1,$t2){
 			$min = $time_info['minutes'];
 		}
 		
-		 // $hour = 24;
+		 // $hour = 4;
 		 // $min  = 01;
 		  // $day = 4;
 		// because of the way the schedule is setup Sat 1am-4am is still Friday 
@@ -518,6 +534,7 @@ function t_diff($t1,$t2){
 		$for_user["Whitnall_Field"] = "Whitnall Field";
 		$for_user["Newell_Apartments"]= "Newell Apartments ";
 		$for_user["110_Broad_St"] = "110 Broad St.";
+		$for_user["104_Broad_St"] = "104 Broad St.";
 		$for_user["Kendrick_and_Broad"] = "Kendrick &amp; Broad ";
 		$for_user["Cutten_Hall"] = "Cutten Hall";
 		$for_user["Townhouses"] = "Townhouses";
@@ -596,8 +613,14 @@ function t_diff($t1,$t2){
 
 	mysqli_close($con);
  ?>
+	<form action="index_copy.php" action="get" >
+			<div class="row">
+					<button type="submit"  class="btn btn-danger  col-xs-6 col-xs-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >BACK</button>
+			</div>
+		</form>
 
 	</section>
+		
 	</div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
