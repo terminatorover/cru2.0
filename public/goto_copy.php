@@ -26,9 +26,8 @@
 	<div id="full-screen"></div>
 	<section class="row">
 	
-		<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center;
-			top: -1px; " >GATE CRUISER</h1>
-	
+	<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center;
+top: -1px; " >CRUISER APP</h2>
 	</section>
 	
 	<div class="row">
@@ -36,13 +35,6 @@
 		<?php 
 error_reporting(E_ERROR);
 
-	// $hostname = null;
-	// $username = "root";
-	// $password = "";
-	// $database = "cruiser_app";
-	// $port = null;
-	// $socket = "/cloudsql/colgate-cruiser:get-cru4";
-	$hostname = 'localhost:3306';
 $username = "robera";
 $password = "password";
 $database = "cruiser_app";
@@ -50,15 +42,8 @@ $port = null;
 $socket = null;
 
 
+
 	
-
-	// $hostname = 'localhost:3306';
-// $username = "robera";
-// $password = "password";
-// $database = "cruiser_app";
-// $port = null;
-// $socket = null;
-
 
 
 $con = new mysqli($hostname,$username,$password,$database,$port,$socket);
@@ -145,6 +130,8 @@ function t_diff($t1,$t2){
 	input will be the point of departure and destination,given hour and route + db connection 
 	return will be a set of php raw handles
 	**/
+	
+	
 		
 		if ( (int)$min >= 30){
 			$ts = $hour * 2;
@@ -161,7 +148,7 @@ function t_diff($t1,$t2){
 			// echo "<br>";
 			if (!$result){
 				 echo "DAY Database query failed for day query";
-				 	echo "<br>";
+				 	// echo "<br>";
 				return -1 ;		
 			}else{
 				return $result; 
@@ -222,9 +209,8 @@ function t_diff($t1,$t2){
 		//first we check if it is between 11pm -12:59 am if not we just need one query else we need two
 		//one for the 11pm -12:59am range and the other from 1:00am to 4am. also note that past midnight 
 		//queries are allowed only for days Wen- Sat inclusive 
-		
-		if ( ($hour < 23 ) && ( $hour >= 4 )){
-
+		if ( ($hour < 23 ) && ( $hour >= 4 )){//these are nice hours 
+			
 			$times = db_query($from,$to,$hour,$min,$route,$con,False);
 			if ($times != -1 ){//aka we were able to get data from the db
 				$ret_handler = array();
@@ -290,6 +276,7 @@ function t_diff($t1,$t2){
 										
 										if ($times != -1 ){//aka we were able to get data from the db										
 											$ret_handler = array();
+											// echo " I SHOULD Se ";
 											array_push($ret_handler,$times,NULL);
 
 										}else{
@@ -322,10 +309,16 @@ function t_diff($t1,$t2){
 			while ( $start_finish = mysqli_fetch_row($tset1)){
 				$start_time =  $start_finish[0];
 				$finish_time =  $start_finish[1];
-				// echo $start_time."++++++".$current_time;
+				// echo "<br>";
+				// echo "<br>";
+				// echo "start time".$start_time."++++--------++"."finish time".$finish_time;
+				// echo "<br>";
+				// echo "start time".$start_time."++++--------++"."current time".$current_time;
 					// echo "<br>";		
+				$curfew = array(0,1,2,3);
 				//we check if they are null or if the start time < current time if so we skip 
-				if ( ($start_time != NULL ) && t1_vs_t2($start_time,$current_time) || ($current_time == 24)){
+				if ( ($start_time != NULL ) && t1_vs_t2($start_time,$current_time) || (in_array($day,$curfew) && ($hour == 24)   )){//notice the part after the or is the what is allowing us to get the answers 
+				//to on our curfew days when our current hour (24 ) is > the coming hours example 7am and hence won't pass the start time < current time test 
 					$sf = array();
 					// echo $start_time."++++++".$finish_time;
 					// echo "<br>";		
@@ -362,7 +355,7 @@ function t_diff($t1,$t2){
 				}
 		 }
 		 $len_arr = count($clean_times);
-		 // // echo $len_arr;
+		 // echo $len_arr;
 		 // echo "<br>";
 		 // for ( $itr = 0; $itr < $len_arr ; $itr ++){
 			// $start = $clean_times[$itr][0];
@@ -478,10 +471,10 @@ function t_diff($t1,$t2){
 			$hour = $time_info['hours'];
 			$min = $time_info['minutes'];
 		}
-		
-		 // $hour = 4;
-		 // $min  = 01;
-		  // $day = 4;
+		// &&&
+		 $hour = 24;
+		 $min  = 19;
+		  $day = 0;
 		// because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
 		if ($day == 6 && (( $hour < 4 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
@@ -502,9 +495,9 @@ function t_diff($t1,$t2){
 		  // $day = 4;
 		
 		// now we have our user input hours or just the current time + the day of the week 
-		$day = (int) $time_info['wday'];
-		$hour = (int) $hour;
-		$min = (int) $min;
+		// $day = (int) $time_info['wday'];
+		// $hour = (int) $hour;
+		// $min = (int) $min;
 		
 				// echo "HOUR ".$hour;
 		// echo "<br>";
@@ -534,7 +527,6 @@ function t_diff($t1,$t2){
 		$for_user["Whitnall_Field"] = "Whitnall Field";
 		$for_user["Newell_Apartments"]= "Newell Apartments ";
 		$for_user["110_Broad_St"] = "110 Broad St.";
-		$for_user["104_Broad_St"] = "104 Broad St.";
 		$for_user["Kendrick_and_Broad"] = "Kendrick &amp; Broad ";
 		$for_user["Cutten_Hall"] = "Cutten Hall";
 		$for_user["Townhouses"] = "Townhouses";
@@ -614,13 +606,12 @@ function t_diff($t1,$t2){
 	mysqli_close($con);
  ?>
 	<form action="index_copy.php" action="get" >
-			<div class="row">
-					<button type="submit"  class="btn btn-danger  col-xs-6 col-xs-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >BACK</button>
-			</div>
-		</form>
+		<div class="row">
+				<button type="submit"  class="btn btn-danger  col-xs-6 col-xs-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >BACK</button>
+		</div>
+	</form>
 
 	</section>
-		
 	</div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
