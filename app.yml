@@ -1,0 +1,30 @@
+application: colgate-cruiser
+version: 1
+runtime: php
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /css
+  static_dir : css
+ 
+- url: /img
+  static_dir : img
+  
+- url: /includes
+  script : button_select_allinone.php
+  
+
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+  
+- url: /goto_copy.php
+  script: goto_copy.php
+ 
+- url: /index_copy.php
+  script: index_copy.php
+  
+- url: /
+  script: index_copy.php
