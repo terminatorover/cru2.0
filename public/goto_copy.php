@@ -27,7 +27,7 @@
 	<section class="row">
 	
 	<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center;
-top: -1px; " >CRUISER APP</h2>
+top: -1px; " >GATE CRUISER</h2>
 	</section>
 	
 	<div class="row">

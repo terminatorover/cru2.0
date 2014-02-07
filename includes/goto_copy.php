@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -29,7 +27,8 @@
 	<section class="row">
 	
 	<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center;
-top: -1px; " >CRUISER APP</h2>
+top: -1px; " >GATE CRUISER</h2>
+	
 	</section>
 	
 	<div class="row">
@@ -37,19 +36,9 @@ top: -1px; " >CRUISER APP</h2>
 		<?php 
 error_reporting(E_ERROR);
 
-$hostname = 'localhost:3306';
-$username = "robera";
-$password = "password";
-$database = "cruiser_app";
-$port = null;
-$socket = null;
 
-	// $hostname = null;
-	// $username = "root";
-	// $password = "";
-	// $database = "cruiser_app";
-	// $port = null;
-	// $socket = "/cloudsql/colgate-cruiser:get-cru4";
+	
+
 
 $con = new mysqli($hostname,$username,$password,$database,$port,$socket);
 
@@ -135,6 +124,7 @@ function t_diff($t1,$t2){
 	input will be the point of departure and destination,given hour and route + db connection 
 	return will be a set of php raw handles
 	**/
+		
 		if ( (int)$min >= 30){
 			$ts = $hour * 2;
 		}else{
@@ -255,14 +245,15 @@ function t_diff($t1,$t2){
 
 					}
 				
-			}else{//we are not in the range of W-Sat and hence no cruisers run past midnight 
+			}else{//we are not in the range of Thur-Sat and hence no cruisers run past midnight 
 			//so if its currently pre midnight and there is a cruiser that starts pre midnight and stops pre midnight or almost after
 			//use the that.
 								// if ( ($hour >= 23)){
-									if(($hour == 23) ) {
-									
+									if(($hour == 23)  ) {
+									// echo "I SHOULD BE SEEING THIS ";
 										$times = db_query($from,$to,$hour,$min,$route,$con,False);
 										if ($times != -1 ){//aka we were able to get data from the db
+										// echo "GOT IT";
 											$ret_handler = array();
 											array_push($ret_handler,$times,NULL);
 
@@ -276,8 +267,7 @@ function t_diff($t1,$t2){
 										// echo "THIS SHOULD BE GETTING HIT";
 										// echo "<br>";
 										
-										if ($times != -1 ){//aka we were able to get data from the db
-										
+										if ($times != -1 ){//aka we were able to get data from the db										
 											$ret_handler = array();
 											array_push($ret_handler,$times,NULL);
 
@@ -468,17 +458,17 @@ function t_diff($t1,$t2){
 			$min = $time_info['minutes'];
 		}
 		
-		// $hour = 1;
-		 // $min  = 10;
-		  // $day = 0;
-		//because of the way the schedule is setup Sat 1am-4am is still Friday 
+		 // $hour = 4;
+		 // $min  = 01;
+		  // $day = 4;
+		// because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
-		if ($day == 6 && ( $hour < 4 ) ){//namely if its Saturday 1am-4am, then use the Friday schedule 
+		if ($day == 6 && (( $hour < 4 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
 			$day = 5;
 		
 		}
 		
-		if ($day == 0 && ( $hour < 4 ) ){//namely if its Sunday  1am-4am, then use the Saturday schedule 
+		if ($day == 0 && (( $hour < 4 ) || ( $hour == 24 ) )) {//namely if its Sunday  midnight-4am, then use the Saturday schedule 
 			$day = 6;
 		
 		}
@@ -490,9 +480,9 @@ function t_diff($t1,$t2){
 		 // $min  = 10;
 		  // $day = 4;
 		
-		//now we have our user input hours or just the current time + the day of the week 
-		// $day = (int) $time_info['wday'];
-		// $hour = (int) $hour;
+		// now we have our user input hours or just the current time + the day of the week 
+		$day = (int) $time_info['wday'];
+		$hour = (int) $hour;
 		$min = (int) $min;
 		
 				// echo "HOUR ".$hour;
@@ -522,8 +512,8 @@ function t_diff($t1,$t2){
 		$for_user["Gate_House"]= "Gate House";
 		$for_user["Whitnall_Field"] = "Whitnall Field";
 		$for_user["Newell_Apartments"]= "Newell Apartments ";
-		$for_user["Newell_Apartments"] = "University Ct./Burch";
 		$for_user["110_Broad_St"] = "110 Broad St.";
+		$for_user["104_Broad_St"] = "104 Broad St.";
 		$for_user["Kendrick_and_Broad"] = "Kendrick &amp; Broad ";
 		$for_user["Cutten_Hall"] = "Cutten Hall";
 		$for_user["Townhouses"] = "Townhouses";
@@ -536,6 +526,8 @@ function t_diff($t1,$t2){
 		$for_user["Parker_Apartments"] = "Parker Apartments";
 		$for_user["Case_Geyer_Library"] = "Case-Geyer Library";
 		$for_user["Perrson_Hall"] = "Perrson Hall";
+		$for_user["University_Ct_Burch"] = "University Ct./Burch";
+		
 
 		//NAME CONVERSTION FOR PLACES-----> give cleaned up user friendly version of the  cruiser names
 		// that correspond to the database route names
@@ -562,6 +554,11 @@ function t_diff($t1,$t2){
 
 				$time_of_departure = $show_me_how[0];
 				$time_of_arrival = $show_me_how[1];
+				//This check is for the quirky situation on M/T at 11pm-12am range when we can't use the bus if our 
+				//arrival time (at destination )is after 12am 
+				if (( ( $day < 3) &&( $day > 0))  && t1_vs_t2($time_of_arrival,"23:59")){
+						continue ;
+				}
 				$ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".standard_time($time_of_departure)." and
 				get to ".$for_user[$destination]." at ".standard_time($time_of_arrival);		
 				

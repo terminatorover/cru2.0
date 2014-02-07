@@ -45,25 +45,25 @@
 							  <!-- UPPER CAMPUS-->
 							  <button type="button" class="btn btn-default res"  style="padding-right: 14px;width: 100%;; background-color:#B0312A; font-family: 'Graduate', cursive; border: 0px; padding-bottom: 1.6em; padding-top: 1.5em;padding-top: 1.5em;">
 								 <select class="form-control" name="from">
-											<option value="Perrson_Hall" >Perrson Hall</option>
+											<option value="104_Broad_St">104 Broad St.</option>
+											<option value="110_Broad_St">110 Broad St.</option>
+											<option value="Bookstore">Bookstore</option>
+											<option value="Case_Geyer_Library">Case-Geyer Library </option>
+											<option value="Cutten_Hall">Cutten Hall</option>
 											<option value="Frank_Dining_Hall">Frank Dining Hall</option>
 											<option value="Gate_House">Gate House</option>
-											<option value="Whitnall_Field">Whitnall Field</option>
-											<option value="Newell_Apartments">Newell Apartments</option>
-											<option value="University_Ct_Burch">University Ct./Burch </option>
-											<option value="110_Broad_St">110 Broad St.</option>
-											<option value="Kendrick_and_Broad">Kendrick &amp; Broad </option>
-											<option value="Cutten_Hall">Cutten Hall</option>
-											<option value="Townhouses">Townhouses</option>
-											<option value="Bookstore">Bookstore</option>
-											<option value="SOMAC"> SOMAC</option>
 											<option value="Hamilton_Airport">Hamilton Airport</option>
-											<option value="Parrys_Plaza">Parry&#39;s Plaza</option>
-											<option value="Price_Chopper">Price Chopper </option>
-											<option value="Village_Green">Village Green </option>
-											<option value="Case_Geyer_Library">Case-Geyer Library </option>
+											<option value="Kendrick_and_Broad">Kendrick &amp; Broad </option>
+											<option value="Newell_Apartments">Newell Apartments</option>
 											<option value="Parker_Apartments">Parker Apartments </option>
-
+											<option value="Parrys_Plaza">Parry&#39;s Plaza</option>
+											<option value="Perrson_Hall" >Perrson Hall</option>
+											<option value="Price_Chopper">Price Chopper </option>
+											<option value="SOMAC"> SOMAC</option>
+											<option value="Townhouses">Townhouses</option>
+											<option value="University_Ct_Burch">University Ct./Burch </option>
+											<option value="Village_Green">Village Green </option>
+											<option value="Whitnall_Field">Whitnall Field</option>
 								 </select>
 							  </button>
 							</div>
@@ -76,24 +76,25 @@
 						 
 						  <button type="button" class="btn btn-default res"  style="padding-right: 14px; width: 100%; background-color:#B0312A; font-family: 'Graduate', cursive; border: 0px; padding-bottom: 1.6em; padding-top: 1.5em;padding-top: 1.5em;">
 							 <select class="form-control" name="to">
-										<option value="Perrson_Hall" >Perrson Hall</option>
+										<option value="104_Broad_St">104 Broad St.</option>
+										<option value="110_Broad_St">110 Broad St.</option>
+										<option value="Bookstore">Bookstore</option>
+										<option value="Case_Geyer_Library">Case-Geyer Library </option>
+										<option value="Cutten_Hall">Cutten Hall</option>
 										<option value="Frank_Dining_Hall">Frank Dining Hall</option>
 										<option value="Gate_House">Gate House</option>
-										<option value="Whitnall_Field">Whitnall Field</option>
-										<option value="Newell_Apartments">Newell Apartments</option>
-										<option value="University_Ct_Burch">University Ct./Burch </option>
-										<option value="110_Broad_St">110 Broad St.</option>
-										<option value="Kendrick_and_Broad">Kendrick &amp; Broad </option>
-										<option value="Cutten_Hall">Cutten Hall</option>
-										<option value="Townhouses">Townhouses</option>
-										<option value="Bookstore">Bookstore</option>
-										<option value="SOMAC"> SOMAC</option>
 										<option value="Hamilton_Airport">Hamilton Airport</option>
-										<option value="Parrys_Plaza">Parry&#39;s Plaza</option>
-										<option value="Price_Chopper">Price Chopper </option>
-										<option value="Village_Green">Village Green </option>
-										<option value="Case_Geyer_Library">Case-Geyer Library </option>
+										<option value="Kendrick_and_Broad">Kendrick &amp; Broad </option>
+										<option value="Newell_Apartments">Newell Apartments</option>
 										<option value="Parker_Apartments">Parker Apartments </option>
+										<option value="Parrys_Plaza">Parry&#39;s Plaza</option>
+										<option value="Perrson_Hall" >Perrson Hall</option>
+										<option value="Price_Chopper">Price Chopper </option>
+										<option value="SOMAC"> SOMAC</option>
+										<option value="Townhouses">Townhouses</option>
+										<option value="University_Ct_Burch">University Ct./Burch </option>
+										<option value="Village_Green">Village Green </option>
+										<option value="Whitnall_Field">Whitnall Field</option>
 
 							 </select>
 						  </button>
@@ -103,7 +104,7 @@
 				 
 				</div>
 			<div class="row">
-					<button type="submit"  class="btn btn-danger col-xs-12 col-sm-6 col-sm-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >LLEGO</button>
+					<button type="submit"  class="btn btn-danger col-xs-12 col-sm-6 col-sm-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >GO</button>
 			</div>
 			</div>
 
