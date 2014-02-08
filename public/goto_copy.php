@@ -34,16 +34,20 @@ top: -1px; " >GATE CRUISER</h2>
 	<section class="col-sm-5 col-sm-offset-4 " style=" opacity: .9; /* background-color: rgb(62, 111, 69); */ color: black; background-color: rgba(7, 22, 27, 0.91);  ">
 		<?php 
 error_reporting(E_ERROR);
-
+	// $hostname = null;
+	// $username = "root";
+	// $password = "";
+	// $database = "cruiser_app";
+	// $port = null;
+	// $socket = "/cloudsql/colgate-cruiser:get-cru5";
+	
+		$hostname = 'localhost:3306';
 $username = "robera";
 $password = "password";
 $database = "cruiser_app";
 $port = null;
 $socket = null;
 
-
-
-	
 
 
 $con = new mysqli($hostname,$username,$password,$database,$port,$socket);
@@ -75,8 +79,28 @@ function t_diff($t1,$t2){
 		// echo "T1H ".$t1h."==================="." T2H".$t2h;
 		// echo "<br>";
 		if (( $t1h-$t2h) >=2){
+			echo "<br>";
+			echo "TRUE ";
+			echo "<br>";
 			return True;
-		}else{return False;
+		}elseif((( $t1h-$t2h) == 1 ) )  {
+			$until = 60 - $t2m ;
+			$to = $t1m ;
+			$total_min_diff = $until + $to ; 
+			if ($total_min_diff > 65){
+			echo "<br>";
+			echo "TRUE ";
+			echo "<br>";
+				return True ;
+			
+			}
+			
+			
+		
+		}else{
+		echo "<br>";
+			echo "FALSE ";
+			echo "<br>";return False;
 		
 		}
 }
@@ -145,9 +169,10 @@ function t_diff($t1,$t2){
 			$the_query = sprintf("SELECT %s,%s FROM %s WHERE timeslot > %s ",$departure,$destination,$given_route,(string)($ts -1));//ts is for timeslot
 			$result  = mysqli_query($con,$the_query);
 			// echo "DAY QUERY ".$the_query; 
+			// echo "<br>";			echo "DAY QUERY ".$the_query; 
 			// echo "<br>";
 			if (!$result){
-				 echo "DAY Database query failed for day query";
+				 // echo "DAY Database query failed for day query";
 				 	// echo "<br>";
 				return -1 ;		
 			}else{
@@ -158,10 +183,10 @@ function t_diff($t1,$t2){
 			$result  = mysqli_query($con,$the_query);
 
 			// echo "NIGHT QUERY ".$the_query; 
-			// echo "<br>";
+			// echo "<br>";	
 			if (!$result){
-				echo "NIGHT Database query failed for day query";
-				echo "<br>";
+				// echo "NIGHT Database query failed for day query";
+				// echo "<br>";
 
 				return -1 ;		
 			}else{
@@ -227,7 +252,7 @@ function t_diff($t1,$t2){
 			if ( (3 < $day ) && ($day < 7)){//we first check if we are between W-Sat 
 				// echo "<br>";
 				// echo "I SOULDN'T BE SEEING THIS MESSAGE";
-				// echo "<br>";
+				// F
 				$times1 = db_query($from,$to,$hour,$min,$route,$con,False);
 				$times2 = db_query($from,$to,1,NULL,$route,$con,True);
 				if ( ($times1 != -1)  && ($times2 != -1)){//both pre and post midnight queries are successful
@@ -357,12 +382,13 @@ function t_diff($t1,$t2){
 		 $len_arr = count($clean_times);
 		 // echo $len_arr;
 		 // echo "<br>";
-		 // for ( $itr = 0; $itr < $len_arr ; $itr ++){
-			// $start = $clean_times[$itr][0];
-			// $finish = $clean_times[$itr][1];
-			// echo "START:: ".$start." FINISH:: ".$finish;
-			// echo "<br>";
-		 // }
+		 for ( $itr = 0; $itr < $len_arr ; $itr ++){
+			$start = $clean_times[$itr][0];
+			$finish = $clean_times[$itr][1];
+			echo "<br>";
+			echo "START:: ".$start." FINISH:: ".$finish;
+			echo "<br>";
+		 }
 		
 		return $clean_times;
 		
@@ -387,31 +413,50 @@ function t_diff($t1,$t2){
 
 				$start = $time_sets[$itr][0];
 				$finish = $time_sets[$itr][1];
+				//get the start/finish hours 
+				$start_d = explode(":",$start );
+				$finish_d = explode(":",$finish );
+				$start_h= (int) $start_d[0];
+				$finish_h= (int) $finish_d[0];
+				
 				$final = False ;
 				
 				if ($itr <= ($len_arr - 2) ){//check if we are at the final set of start/finish times 
 					$start_next = $time_sets[($itr+1)][0];//the next start time
 					$finish_next = $time_sets[($itr+1)][1];//the next finish time
+					//get the start_next/finish_next hours 
+					
+					$start_next_d = explode(":",$start_next );
+					$finish_next_d = explode(":",$finish_next );
+					$start_next_h= (int) $start_next_d[0];
+					$finish_next_h= (int) $finish_next_d[0];
+					
 				}else{//if we are the final sets of times then the next set(star/finish) will be NULL/NULL
 					$start_next = NULL;
 					$finish_next = NULL;
 				}
 				//now we check for a possible set of accepted times and if we find we return it 
 					// echo "---------".$start."+++++".$finish_next; 
-					// echo "<br>";
+					// // echo "<br>";
 				// echo "START: ".$start." FINISH ".$finish;
 				// echo "<br>";
 				// echo "START-NEXT: ".$start_next." FINISH-NEXT ".$finish_next;
 				// echo "<br>";
+				// echo "===========================";
+				// echo "<br>";
+				
 				
 				//perfect scenario when the first time set includes both start/finish times not null and start < finish 
 				if ($finish != NULL && $start != NULL){
+			
 					if ( t1_vs_t2($finish,$start)){
-						// echo "CASE 1";
+						echo "CASE 1";
+						echo "<br>";
+						if (!t_diff($finish,$start)){
 						array_push($best_times,$start,$finish);
 						return $best_times;
-					}elseif ( ($start == 24 ) && ($finish  != 24 )){//check for the midnight scenario 
-							
+						}
+					}elseif ( ($start_d == 24 ) && ($finish_d  != 24 )){//check for the midnight scenario 							
 							array_push($best_times,$start,$finish);
 							return $best_times;
 						}
@@ -423,12 +468,24 @@ function t_diff($t1,$t2){
 				//cruiser for hours(possibly) ----aka you are taking advantage of the fact that you are moving in the same direction as the 
 				// cruiser current 
 				if ($finish_next != NULL && $start_next != NULL){
+					echo "SHOULDN't GET HIT";
+					echo "<br>";
+					
 					if ( t1_vs_t2($finish_next,$start_next)){
 						// echo "CASE 2";
+						// echo "start_next ".$start_next."===============>".$finish_next;
+						if (!t_diff($finish_next,$start_next)){
 						array_push($best_times,$start_next,$finish_next);
 						return $best_times;
-					}elseif  ( ($start == 24 ) && ($finish  != 24 )){//check for the midnight scenario 
-							
+						}
+					}elseif  ( ($start_next_h == 24 ) && ($finish_next_h != 24 )){//check for the midnight scenario 
+							// echo "HERE";
+							// echo "<br>";
+														// echo "start_next ".$start_next."===============>".$finish_next;
+
+				// echo "<br>";
+			
+						
 							array_push($best_times,$start_next,$finish_next);
 							return $best_times;
 						}
@@ -440,18 +497,28 @@ function t_diff($t1,$t2){
 				//point of departure and get to your destination quicker than wait an "hour" because you are going against the cruiser current 
 				// echo "--------->".$start."+++++>".$finish_next; 
 				if ($finish_next != NULL && $start != NULL){
+				// echo "<br>";
+							// echo "START2: ".$start." FINISH-NEXT2: ".$finish_next;
+				// echo "<br>";		
+					
 					if ( t1_vs_t2($finish_next,$start)){
-						// echo "CASE 3 ---Fork ";
+						 echo "CASE 3 ---Fork ";
+						 echo "<br>";
 						if (!t_diff($finish_next,$start)){
+						// echo "OKAY";
+						// echo "start_d".$start_d;
+						// echo "<br>";
+						// echo "START3: ".$start." FINISH-NEXT3: ".$finish_next;
+				// echo "<br>";
 							array_push($best_times,$start,$finish_next);
 							return $best_times;
 						}
-					}elseif ($start == 24){//check for the midnight scenario 
+					}elseif ($start_h == 24){//check for the midnight scenario 
 							// echo "YOOOOOOOOOOOOOOOOOOOOOO";
 							array_push($best_times,$start,$finish_next);
 							return $best_times;
 						}
-					}
+				}
 			}
 		
 		return "NO PATH";
@@ -472,9 +539,25 @@ function t_diff($t1,$t2){
 			$min = $time_info['minutes'];
 		}
 		// &&&
-		 // $hour = 1;
-		 // $min  = 59;
-		  // $day = 3;
+		
+		// //Artificial testing for time 
+		 $hour = 1;
+		 $min  = 20;
+		  $day = 0;
+		  //REAL TIME 
+		  	// $day = (int) $time_info['wday'];
+		// $hour = (int) $hour;
+		// $min = (int) $min;
+		
+		
+		// echo $hour ;
+		if(is_numeric ($hour)){
+		// echo "OHHHHHHHHHHHHHHHHHHH";
+		}
+			if ($hour == 0){
+			// echo "WTF";
+				$hour = 24;
+			}
 		// because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
 		if ($day == 6 && (( $hour < 3 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
@@ -489,20 +572,16 @@ function t_diff($t1,$t2){
 		
 		
 		
-		// //Artificial testing for time 
-		  // $hour = 24;
-		 // $min  = 10;
-		  // $day = 4;
+		
+
 		
 		// now we have our user input hours or just the current time + the day of the week 
-		// $day = (int) $time_info['wday'];
-		// $hour = (int) $hour;
-		// $min = (int) $min;
+	
 		
 				// echo "HOUR ".$hour;
-		// echo "<br>";
-		// echo "DAY ".$day;
-		// echo "<br>";
+			// echo "<br>";
+			// echo "DAY ".$day;
+			// echo "<br>";
 		// echo "MINUTE ".$minute;
 		// echo "<br>";
 		//each array represents a range of days and each item in the string is the name of the  
@@ -557,8 +636,9 @@ function t_diff($t1,$t2){
 		$genie = array(); //THIS IS WHERE THE STRINGS TELLING THE USER WHAT DO WILL BE STORED. THE MAGIC
 		
 		foreach ($todays_cruisers as $a_route){
-					// echo "----------".$a_route." *************************************************************************************";
-				// echo "<br>";
+		echo "<br>";
+					echo "----------".$a_route." *************************************************************************************";
+				echo "<br>";
 			//First we query the db appropriately and get the results back 
 			$data = from_db($day,$hour,$a_route,$departure,$destination,$con,$hour,$min);
 			$show_me_how = best_time($data);
