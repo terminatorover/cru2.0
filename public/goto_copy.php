@@ -68,8 +68,8 @@ function t_diff($t1,$t2){
 		if that is the case then we can't say we have a solution because in these cases the
 		cruiser stops running at some point (usually a lunch time scenario )
 		**/
-		// echo "CARE";
-		// echo "<br>";
+		echo "CARE";
+		echo "<br>";
 		$t1 = explode(":",$t1);
 		$t1h = (int) $t1[0];
 		$t1m = (int) $t1[1];
@@ -87,20 +87,25 @@ function t_diff($t1,$t2){
 			$until = 60 - $t2m ;
 			$to = $t1m ;
 			$total_min_diff = $until + $to ; 
-			if ($total_min_diff > 65){
+			echo "TOTAL TIME ".$total_min_diff;
+			if ($total_min_diff > 61){
 			echo "<br>";
 			echo "TRUE ";
 			echo "<br>";
 				return True ;
 			
+			}else{
+				echo "<br>";
+			echo "FALSE ";
+			echo "<br>";
+			return False;
 			}
 			
-			
-		
 		}else{
 		echo "<br>";
 			echo "FALSE ";
-			echo "<br>";return False;
+			echo "<br>";
+			return False;
 		
 		}
 }
@@ -382,13 +387,13 @@ function t_diff($t1,$t2){
 		 $len_arr = count($clean_times);
 		 // echo $len_arr;
 		 // echo "<br>";
-		 for ( $itr = 0; $itr < $len_arr ; $itr ++){
-			$start = $clean_times[$itr][0];
-			$finish = $clean_times[$itr][1];
-			echo "<br>";
-			echo "START:: ".$start." FINISH:: ".$finish;
-			echo "<br>";
-		 }
+		 // for ( $itr = 0; $itr < $len_arr ; $itr ++){
+			// $start = $clean_times[$itr][0];
+			// $finish = $clean_times[$itr][1];
+			// echo "<br>";
+			// echo "START:: ".$start." FINISH:: ".$finish;
+			// echo "<br>";
+		 // }
 		
 		return $clean_times;
 		
@@ -450,8 +455,8 @@ function t_diff($t1,$t2){
 				if ($finish != NULL && $start != NULL){
 			
 					if ( t1_vs_t2($finish,$start)){
-						echo "CASE 1";
-						echo "<br>";
+						// echo "CASE 1";
+						// echo "<br>";
 						if (!t_diff($finish,$start)){
 						array_push($best_times,$start,$finish);
 						return $best_times;
@@ -468,8 +473,8 @@ function t_diff($t1,$t2){
 				//cruiser for hours(possibly) ----aka you are taking advantage of the fact that you are moving in the same direction as the 
 				// cruiser current 
 				if ($finish_next != NULL && $start_next != NULL){
-					echo "SHOULDN't GET HIT";
-					echo "<br>";
+					// echo "SHOULDN't GET HIT";
+					// echo "<br>";
 					
 					if ( t1_vs_t2($finish_next,$start_next)){
 						// echo "CASE 2";
@@ -502,8 +507,8 @@ function t_diff($t1,$t2){
 				// echo "<br>";		
 					
 					if ( t1_vs_t2($finish_next,$start)){
-						 echo "CASE 3 ---Fork ";
-						 echo "<br>";
+						 // echo "CASE 3 ---Fork ";
+						 // echo "<br>";
 						if (!t_diff($finish_next,$start)){
 						// echo "OKAY";
 						// echo "start_d".$start_d;
@@ -541,13 +546,13 @@ function t_diff($t1,$t2){
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 1;
-		 $min  = 20;
-		  $day = 0;
+		 // $hour = 1;
+		 // $min  = 20;
+		  // $day = 3;
 		  //REAL TIME 
-		  	// $day = (int) $time_info['wday'];
-		// $hour = (int) $hour;
-		// $min = (int) $min;
+		  	$day = (int) $time_info['wday'];
+		$hour = (int) $hour;
+		$min = (int) $min;
 		
 		
 		// echo $hour ;
