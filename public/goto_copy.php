@@ -27,7 +27,7 @@
 	<section class="row">
 	
 	<h1 class="col-xs-8 col-xs-offset-2" style="font-family: 'Graduate', cursive; color:rgb(148, 13, 56); font-weight:900; text-align:center;
-top: -1px; " >CRUISER APP</h2>
+top: -1px; " >GATE CRUISER</h2>
 	</section>
 	
 	<div class="row">
@@ -472,12 +472,12 @@ function t_diff($t1,$t2){
 			$min = $time_info['minutes'];
 		}
 		// &&&
-		 $hour = 1;
-		 $min  = 20;
-		  $day = 6;
+		 // $hour = 1;
+		 // $min  = 59;
+		  // $day = 3;
 		// because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
-		if ($day == 6 && (( $hour < 4 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
+		if ($day == 6 && (( $hour < 3 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
 			$day = 5;
 		
 		}
@@ -527,6 +527,7 @@ function t_diff($t1,$t2){
 		$for_user["Whitnall_Field"] = "Whitnall Field";
 		$for_user["Newell_Apartments"]= "Newell Apartments ";
 		$for_user["110_Broad_St"] = "110 Broad St.";
+		$for_user["104_Broad_St"] = "104 Broad St.";
 		$for_user["Kendrick_and_Broad"] = "Kendrick &amp; Broad ";
 		$for_user["Cutten_Hall"] = "Cutten Hall";
 		$for_user["Townhouses"] = "Townhouses";
