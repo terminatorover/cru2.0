@@ -19,7 +19,17 @@
 	<!-- This is to enable us to use less -->
 	<!-- <link rel="stylesheet/less" type="text/css" href="css/styles.less"  /> -->
 	<link href='http://fonts.googleapis.com/css?family=Graduate' rel='stylesheet' type='text/css'>
+	 <!-- Google analytics -->
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+	  ga('create', 'UA-47930591-1', 'colgatecruiser.com');
+	  ga('send', 'pageview');
+
+	</script>
   </head>
   <body id="home" style=" background-color: black; ">
 	<!-- <div id="full-screen"></div>-->
@@ -34,19 +44,14 @@ top: -1px; " >GATE CRUISER</h2>
 	<section class="col-sm-5 col-sm-offset-4 " style=" opacity: .9; /* background-color: rgb(62, 111, 69); */ color: black; background-color: rgba(7, 22, 27, 0.91);  ">
 		<?php 
 error_reporting(E_ERROR);
-	// $hostname = null;
-	// $username = "root";
-	// $password = "";
-	// $database = "cruiser_app";
-	// $port = null;
-	// $socket = "/cloudsql/colgate-cruiser:get-cru5";
+
 	
-		$hostname = 'localhost:3306';
-$username = "robera";
-$password = "password";
-$database = "cruiser_app";
-$port = null;
-$socket = null;
+		// $hostname = 'localhost:3306';
+// $username = "robera";
+// $password = "password";
+// $database = "cruiser_app";
+// $port = null;
+// $socket = null;
 
 
 
@@ -68,8 +73,8 @@ function t_diff($t1,$t2){
 		if that is the case then we can't say we have a solution because in these cases the
 		cruiser stops running at some point (usually a lunch time scenario )
 		**/
-		echo "CARE";
-		echo "<br>";
+		// echo "CARE";
+		// echo "<br>";
 		$t1 = explode(":",$t1);
 		$t1h = (int) $t1[0];
 		$t1m = (int) $t1[1];
@@ -79,32 +84,31 @@ function t_diff($t1,$t2){
 		// echo "T1H ".$t1h."==================="." T2H".$t2h;
 		// echo "<br>";
 		if (( $t1h-$t2h) >=2){
-			echo "<br>";
-			echo "TRUE ";
-			echo "<br>";
+			// echo "<br>";
+			// echo "TRUE ";
+			// echo "<br>";
 			return True;
 		}elseif((( $t1h-$t2h) == 1 ) )  {
 			$until = 60 - $t2m ;
 			$to = $t1m ;
 			$total_min_diff = $until + $to ; 
-			echo "TOTAL TIME ".$total_min_diff;
+			// echo "TOTAL TIME ".$total_min_diff;
 			if ($total_min_diff > 61){
-			echo "<br>";
-			echo "TRUE ";
-			echo "<br>";
+			// echo "<br>";
+			// echo "TRUE ";
+			// echo "<br>";
 				return True ;
-			
 			}else{
-				echo "<br>";
-			echo "FALSE ";
-			echo "<br>";
+				// echo "<br>";
+			// echo "FALSE ";
+			// echo "<br>";
 			return False;
 			}
 			
 		}else{
-		echo "<br>";
-			echo "FALSE ";
-			echo "<br>";
+		// echo "<br>";
+			// echo "FALSE ";
+			// echo "<br>";
 			return False;
 		
 		}
@@ -641,9 +645,9 @@ function t_diff($t1,$t2){
 		$genie = array(); //THIS IS WHERE THE STRINGS TELLING THE USER WHAT DO WILL BE STORED. THE MAGIC
 		
 		foreach ($todays_cruisers as $a_route){
-		echo "<br>";
-					echo "----------".$a_route." *************************************************************************************";
-				echo "<br>";
+		// echo "<br>";
+					// echo "----------".$a_route." *************************************************************************************";
+				// echo "<br>";
 			//First we query the db appropriately and get the results back 
 			$data = from_db($day,$hour,$a_route,$departure,$destination,$con,$hour,$min);
 			$show_me_how = best_time($data);
@@ -705,5 +709,6 @@ function t_diff($t1,$t2){
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
 	<script src="js/less.js" type="text/javascript"></script>
+	
   </body>
 </html>
