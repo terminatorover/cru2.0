@@ -44,14 +44,19 @@ top: -1px; " >GATE CRUISER</h2>
 	<section class="col-sm-5 col-sm-offset-4 " style=" opacity: .9; /* background-color: rgb(62, 111, 69); */ color: black; background-color: rgba(7, 22, 27, 0.91);  ">
 		<?php 
 error_reporting(E_ERROR);
-
+	// $hostname = null;
+	// $username = "root";
+	// $password = "";
+	// $database = "cruiser_app";
+	// $port = null;
+	// $socket = "/cloudsql/colgate-cruiser:get-cru5";
 	
-		// $hostname = 'localhost:3306';
-// $username = "robera";
-// $password = "password";
-// $database = "cruiser_app";
-// $port = null;
-// $socket = null;
+		$hostname = 'localhost:3306';
+$username = "robera";
+$password = "password";
+$database = "cruiser_app";
+$port = null;
+$socket = null;
 
 
 
@@ -351,16 +356,16 @@ function t_diff($t1,$t2){
 					// echo "<br>";		
 				$curfew = array(0,1,2,3);
 				//we check if they are null or if the start time < current time if so we skip 
-				if ( ($start_time != NULL ) && t1_vs_t2($start_time,$current_time) || (in_array($day,$curfew) && ($hour == 24)   )){//notice the part after the or is the what is allowing us to get the answers 
+				if ( (!is_null($start_time ) ) && (t1_vs_t2($start_time,$current_time) || (in_array($day,$curfew) && ($hour == 24)   ))){//notice the part after the or is the what is allowing us to get the answers 
 				//to on our curfew days when our current hour (24 ) is > the coming hours example 7am and hence won't pass the start time < current time test 
 					$sf = array();
 					// echo $start_time."++++++".$finish_time;
 					// echo "<br>";		
-
-					array_push($sf,$start_time,$finish_time);
-					array_push($clean_times,$sf);
+						array_push($sf,$start_time,$finish_time);
+						array_push($clean_times,$sf);
+					
 				}
-				elseif( ($start_time == NULL)  && ($finish_time != NULL)) {
+				elseif( is_null($start_time )   && !is_null($finish_time ) ) {
 					$sf = array();
 					// echo $start_time."----".$finish_time;
 					// echo "<br>";
@@ -434,7 +439,8 @@ function t_diff($t1,$t2){
 					$start_next = $time_sets[($itr+1)][0];//the next start time
 					$finish_next = $time_sets[($itr+1)][1];//the next finish time
 					//get the start_next/finish_next hours 
-					
+					// echo "ASGADDDDDDDDDDDDDDDDDDDDDDDDDD";
+					// echo "<br>";
 					$start_next_d = explode(":",$start_next );
 					$finish_next_d = explode(":",$finish_next );
 					$start_next_h= (int) $start_next_d[0];
@@ -511,8 +517,8 @@ function t_diff($t1,$t2){
 				// echo "<br>";		
 					
 					if ( t1_vs_t2($finish_next,$start)){
-						 // echo "CASE 3 ---Fork ";
-						 // echo "<br>";
+							 // echo "CASE 3 ---Fork ";
+							 // echo "<br>";
 						if (!t_diff($finish_next,$start)){
 						// echo "OKAY";
 						// echo "start_d".$start_d;
@@ -550,13 +556,13 @@ function t_diff($t1,$t2){
 		// &&&
 		
 		// //Artificial testing for time 
-		 // $hour = 1;
-		 // $min  = 20;
-		  // $day = 3;
+		 $hour = 18;
+		 $min  = 20;
+		  $day = 3;	
 		  //REAL TIME 
-		  	$day = (int) $time_info['wday'];
-		$hour = (int) $hour;
-		$min = (int) $min;
+		  	// // $day = (int) $time_info['wday'];
+		// // $hour = (int) $hour;	
+		// // $min = (int) $min;
 		
 		
 		// echo $hour ;
@@ -567,6 +573,8 @@ function t_diff($t1,$t2){
 			// echo "WTF";
 				$hour = 24;
 			}
+			
+		/////=====================================================================> TREAT AS <========================================================================
 		// because of the way the schedule is setup Sat 1am-4am is still Friday 
 		//and sunday 1am-4am is still saturuday 
 		if ($day == 6 && (( $hour < 3 ) || ( $hour == 24 ) )){//namely if its Saturday midnight -4am, then use the Friday schedule 
@@ -579,11 +587,6 @@ function t_diff($t1,$t2){
 		
 		}
 		
-		
-		
-		
-
-		
 		// now we have our user input hours or just the current time + the day of the week 
 	
 		
@@ -595,11 +598,14 @@ function t_diff($t1,$t2){
 		// echo "<br>";
 		//each array represents a range of days and each item in the string is the name of the  
 		//possible route as seen in the db(each cruiser route is a table in the db)
-		$m_f = "ca_mf cb_mf cc_mf cd_mf ce_w_s";
+		// $m_f = "ca_mf cb_mf cc_mf cd_mf ce_w_s";
+		
+		$m_t = "ca_mf cb_mf cc_mf cd_mf";
+		$w_f = "ca_mf cb_mf cc_mf cd_mf ce_w_s";
 		$sun = "ca_sun cb_sun";
 		$sat = "ca_sat cb_sat ce_w_s";
 		//on a given day we select a set of possible routes
-		$week_routes =  array($sun,$m_f,$m_f,$m_f,$m_f,$m_f,$sat);//matches the day with the set of cruisers one might use 
+		$week_routes =  array($sun,$m_t,$m_t,$w_f,$w_f,$w_f,$sat);//matches the day with the set of cruisers one might use 
 		$todays_cruisers = $week_routes[$day];//based on the given day we choose the set of possible cruiser related routes we can use
 		$todays_cruisers = explode(' ',$todays_cruisers);//make  a list out of them 
 		
@@ -657,14 +663,26 @@ function t_diff($t1,$t2){
 
 				$time_of_departure = $show_me_how[0];
 				$time_of_arrival = $show_me_how[1];
+				// echo $time_of_arrival."000000000000000000000000000".$time_of_departure;
 				//This check is for the quirky situation on M/T at 11pm-12am range when we can't use the bus if our 
 				//arrival time (at destination )is after 12am 
 				if (( ( $day < 3) &&( $day > 0))  && t1_vs_t2($time_of_arrival,"23:59")){
+					// echo "WF";
 						continue ;
 				}
+				//this is for another quirky situation on m/f cruiser stop running around 5:30 and start back up again at 6 so 
+				//since the time difference between these two is < an hour the t_diff won't pick up on the fact that you can't 
+				//actually hop on a cruiser after 5pm and get droped off if you "get" to your dest on and after 6pm 
+				
+				if ( ( $day > 0) &&( $day  < 6 )  && (t1_vs_t2($time_of_arrival,"17:59") && ($hour == 17 ) ) ){
+				echo "WF";
+					continue ;
+					
+				}
+				
 				$ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".standard_time($time_of_departure)." and
 				get to ".$for_user[$destination]." at ".standard_time($time_of_arrival);		
-				
+				// echo $ans;	
 				// $ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".$time_of_departure." and
 				// get to ".$for_user[$destination]." at ".$time_of_arrival;
 				array_push($genie,$ans);
