@@ -68,6 +68,8 @@ if (mysqli_connect_errno())
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
 
+  
+  
 
   //helper functions checks if the difference between the two hours is >=2
 function t_diff($t1,$t2){
@@ -136,6 +138,31 @@ function t_diff($t1,$t2){
 			}
 		
 	}
+	
+	//helper function, to check if a given time is between two sets of times 
+	function between($input_time, $before_side,$after_side){
+	/**
+	returns true if the inputed time is between the twyo given times 
+	**/
+		// echo "INPUT TIME ---->".$input_time."[[[[".$before_side."--------".$after_side."]]]]]";
+		// echo "<br>";
+		if (is_null($input_time)){
+			// echo "give me null";
+			// echo "<br>";
+			return False; 
+		}
+		if (t1_vs_t2($input_time,$before_side) && t1_vs_t2($after_side,$input_time)){
+			echo "GOT ONE ";
+			echo "<br>";
+			return True; 
+		}else{
+			// echo 
+			echo "<br>";
+			return False;
+		}
+		
+	
+	}
 
 //-----------HELPER FUNCTIONS TO COVERT TIME FROM 24 hour to AM/PM 	
 	function standard_time($input_time){
@@ -161,7 +188,78 @@ function t_diff($t1,$t2){
 		}
 		
 		
-	}			
+	}	
+
+//function for handling the quirks of the non coherent schedule
+
+function  exceptor($times_array,$exceptions,$today,$route){
+/**this takes in the "cleaned time array and then a list of exceptions in a dictionary format
+[ [day] is a the key  and  the value of that key is the list containing route,[(start-times range) ],[(end times range )]]
+a list of days 
+the route being considered 
+start-time range format will be a tuple containing strings ("12:30","1:30")
+end-time range format will be a tuple containing strings ("12:30","1:30")
+
+**/		
+		$clean_array = array();
+		$list_of_exception_days = array_keys($exceptions);//example [1,3,5,0]
+		$len_arr = count($times_array);
+		 // var_dump($list_of_exception_days);
+		// echo ($exceptions[1][0]) ;
+		// echo $list_of_exception_days[0];
+		foreach ($list_of_exception_days as $day ) {
+			// echo "DAY IS ".$day;
+				// echo "<br>";
+				// echo "EXCEPTION ROUTE".$exceptions[$day][0];
+				// echo "<br>";
+				// echo "GIVEN ROUTE".$route;
+				// echo "<br>";
+		if( trim($exceptions[$day][0]) == trim($route)){
+		// echo "DAYS AREN'T THE SAME";
+		}
+				// !( $exceptions[$day][0] == $route)
+				if (False ) {//$exceptions[$day][0]  is the route associated with that exception
+					// echo "NO MATCH";
+					// echo "<br>";
+					continue ;
+				}else{
+					for ( $itr = 0; $itr < $len_arr ; $itr ++){				
+						$start = $times_array[$itr][0];
+						$finish = $times_array[$itr][1];
+						// echo "START ".$start." -------------------- "."FINISH".$finish;
+						// echo "<br>";
+						$non_allowed_start = $exceptions[$day][1];
+						$non_allowed_finish = $exceptions[$day][2];
+						
+						$non_allowed_start_a = $non_allowed_start[0];
+						$non_allowed_start_b = $non_allowed_start[1];
+						
+						$non_allowed_finish_a = $non_allowed_finish[0];
+						$non_allowed_finish_b = $non_allowed_finish[1];
+						// echo "range 1 ===>".$non_allowed_start_a."range2 ===>".$non_allowed_start_b;
+						// echo "<br>";
+						if (between($start,$non_allowed_start_a,$non_allowed_start_b) ){//now we say, hey if the given start time is in the range of not allowed times then don't include it in the list of possible choices 
+							echo "SKIPPED START --->".$start;
+							echo "<br>";
+							continue;
+						}
+						elseif (between($finish,$non_allowed_finish_a,$non_allowed_finish_b) ){//now we say, hey if the given finish time is in the range of not allowed finish times then don't include it in the list of possible choices 
+						echo "SKIPPED FINISH --->".$finish;
+							echo "<br>";
+							continue;
+						}else{
+						// echo "<br>";echo "<br>";echo "<br>";
+							// echo "FOR ONCE ";
+						// echo "<br>";echo "<br>";echo "<br>";
+							array_push($clean_array,$times_array[$itr]);
+						}
+						
+					}
+				}
+		 }
+		return $clean_array;
+}
+
 //wrapper function for asking the db the types of queries that we are interested in 
 	function db_query($departure,$destination,$hour,$min,$given_route,$con,$mid_night){
 	/**
@@ -396,14 +494,34 @@ function t_diff($t1,$t2){
 		 $len_arr = count($clean_times);
 		 // echo $len_arr;
 		 // echo "<br>";
-		 // for ( $itr = 0; $itr < $len_arr ; $itr ++){
-			// $start = $clean_times[$itr][0];
-			// $finish = $clean_times[$itr][1];
-			// echo "<br>";
-			// echo "START:: ".$start." FINISH:: ".$finish;
-			// echo "<br>";
-		 // }
-		
+		 	 for ( $itr = 0; $itr < $len_arr ; $itr ++){
+			$start = $clean_times[$itr][0];
+			$finish = $clean_times[$itr][1];
+			echo "<br>";
+			echo "START:: ".$start." FINISH:: ".$finish;
+			echo "<br>";
+		 }
+
+		$exceptions = array();
+		// echo "SO TRUE ";
+		$exceptions[1] = ["ca_mf",["11:32","11:51"],["12:00","13:00"]];
+		$today = 1 ;
+		$clean_times = exceptor($clean_times,$exceptions,$today,$route);
+/**this takes in the "cleaned time array and then a list of exceptions in a dictionary format
+[ [day] is a the key  and  the value of that key is the list containing route,[(start-times range) ],[(end times range )]]
+a list of days 
+the route being considered 
+start-time range format will be a tuple containing strings ("12:30","1:30")
+end-time range format will be a tuple containing strings ("12:30","1:30")
+
+// **/	
+		 for ( $itr = 0; $itr < $len_arr ; $itr ++){
+			$start = $clean_times[$itr][0];
+			$finish = $clean_times[$itr][1];
+			echo "<br>";
+			echo "START:: ".$start." FINISH:: ".$finish;
+			echo "<br>";
+		 }
 		return $clean_times;
 		
 		
@@ -556,13 +674,14 @@ function t_diff($t1,$t2){
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 18;
-		 $min  = 20;
-		  $day = 3;	
-		  //REAL TIME 
-		  	// // $day = (int) $time_info['wday'];
-		// // $hour = (int) $hour;	
-		// // $min = (int) $min;
+		 $hour = 11;
+		 $min  = 30;
+		  $day = 1;	
+		  
+		 //REAL TIME 
+		  	// $day = (int) $time_info['wday'];
+		// $hour = (int) $hour;	
+		// $min = (int) $min;
 		
 		
 		// echo $hour ;
@@ -652,8 +771,8 @@ function t_diff($t1,$t2){
 		
 		foreach ($todays_cruisers as $a_route){
 		// echo "<br>";
-					// echo "----------".$a_route." *************************************************************************************";
-				// echo "<br>";
+					echo "----------".$a_route." *************************************************************************************";
+				echo "<br>";
 			//First we query the db appropriately and get the results back 
 			$data = from_db($day,$hour,$a_route,$departure,$destination,$con,$hour,$min);
 			$show_me_how = best_time($data);
@@ -664,6 +783,7 @@ function t_diff($t1,$t2){
 				$time_of_departure = $show_me_how[0];
 				$time_of_arrival = $show_me_how[1];
 				// echo $time_of_arrival."000000000000000000000000000".$time_of_departure;
+				// echo "<br>";
 				//This check is for the quirky situation on M/T at 11pm-12am range when we can't use the bus if our 
 				//arrival time (at destination )is after 12am 
 				if (( ( $day < 3) &&( $day > 0))  && t1_vs_t2($time_of_arrival,"23:59")){
@@ -674,11 +794,10 @@ function t_diff($t1,$t2){
 				//since the time difference between these two is < an hour the t_diff won't pick up on the fact that you can't 
 				//actually hop on a cruiser after 5pm and get droped off if you "get" to your dest on and after 6pm 
 				
-				if ( ( $day > 0) &&( $day  < 6 )  && (t1_vs_t2($time_of_arrival,"17:59") && ($hour == 17 ) ) ){
-				echo "WF";
-					continue ;
+				// if ( ( $day > 0) &&( $day  < 6 )  && (t1_vs_t2($time_of_arrival,"17:59") && (($hour == 17 ) || ($hour == 16)) ) ){
+					// continue ;
 					
-				}
+				// }
 				
 				$ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".standard_time($time_of_departure)." and
 				get to ".$for_user[$destination]." at ".standard_time($time_of_arrival);		
