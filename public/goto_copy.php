@@ -202,26 +202,20 @@ and if we go through all non allowed result mappings then we just return True at
 start-time range format will be a tuple containing strings ("12:30","1:30")
 end-time range format will be a tuple containing strings ("12:30","1:30")
 
-the idea(not implemented yet ), for the given $route we use the exceptions dictionary to look up the exceptions and we iterate 
+the idea is for the given $route we use the exceptions dictionary to look up the exceptions and we iterate 
 through them and check if the current best times provided by the best time function is misleading since its in 
 the exceptions time range
 **/		
+		$route = trim($route);
 
+		$exceptions_list = $exceptions[$route];
+		// var_dump($exceptions_list);
+		foreach ($exceptions_list as $exception){
+								// echo "START ".$start." -------------------- "."FINISH".$finish;
 
-		$route = array_keys($exceptions);
-		$route = $route[0];
-		
-		// if( trim($exceptions[$day][0]) == trim($route)){
-		 // echo "DAYS AREN'T THE SAME";
-		 // echo "<br>";
-		// }
-
-						echo "START ".$start." -------------------- "."FINISH".$finish;
-						echo "<br>";
-						echo "ROUTE ".$route;
-						// var_dump()
-						$non_allowed_start = $exceptions[$route][0];
-						$non_allowed_finish = $exceptions[$route][1];
+						// var_dump($exception);
+						$non_allowed_start = $exception[0];
+						$non_allowed_finish = $exception[1];
 						// var_dump($not_allowed_start);
 						$non_allowed_start_a = $non_allowed_start[0];
 						$non_allowed_start_b = $non_allowed_start[1];
@@ -231,16 +225,14 @@ the exceptions time range
 						// echo "range 1 ===>".$non_allowed_start_a."range2 ===>".$non_allowed_start_b;
 						// echo "<br>";
 						if (between($start,$non_allowed_start_a,$non_allowed_start_b) && between($finish,$non_allowed_finish_a,$non_allowed_finish_b) ){//now we say, hey if the given start time is in the range of not allowed times then don't include it in the list of possible choices 
-							echo "SKIPPED START --->".$start;
-							echo "<br>";
-							return False ;
+							// echo "SKIPPED START --->".$start;
+							// echo "<br>";
+							return False ;#this means we failed aka the answer that best times was going to submit to the user is wrong (since it is within the not allowed range)so try again besttimes
 						}
-						else{
-						// echo "<br>";echo "<br>";echo "<br>";
-							echo "FOR ONCE ";
-						// echo "<br>";echo "<br>";echo "<br>";
-							return True; 
-						}
+						
+					
+		}
+
 					
 		return True;
 }
@@ -487,22 +479,7 @@ the exceptions time range
 			echo "<br>";
 		 }
 
-		
-/**this takes in the "cleaned time array and then a list of exceptions in a dictionary format
-[ [day] is a the key  and  the value of that key is the list containing route,[(start-times range) ],[(end times range )]]
-a list of days 
-the route being considered 
-start-time range format will be a tuple containing strings ("12:30","1:30")
-end-time range format will be a tuple containing strings ("12:30","1:30")
 
-// **/	
-		 // for ( $itr = 0; $itr < $len_arr ; $itr ++){
-			// $start = $clean_times[$itr][0];
-			// $finish = $clean_times[$itr][1];
-			// echo "<br>";
-			// echo "START:: ".$start." FINISH:: ".$finish;
-			// echo "<br>";
-		 // }
 		return $clean_times;
 		
 		
@@ -514,13 +491,14 @@ end-time range format will be a tuple containing strings ("12:30","1:30")
 
 	/**
 		given an array of times figures out the next best time if there is none returns the string NO PATH
-		---->THE TOP OF THIS FUNCTION WILL CONTAIN ALL THE EXCEPTIONS 
+		---->THE TOP OF THIS FUNCTION WILL CONTAIN ALL THE EXCEPTIONS !! very easy for anyone to do 
 	**/
 	
 		
 	$exceptions = array();
-							echo "SO TRUE ";
-							$exceptions["ca_mf"] = [["16:00","17:51"],["18:00","19:00"]];
+							
+	$exceptions["ca_mf"] = [[["16:00","17:51"],["17:59","19:00"]] , [["10:38","11:26"],["11:27","11:53"]]];
+	$exceptions["cb_mf"] = [[["16:00","17:51"],["17:59","19:00"]] ];
 
 		$len_arr = count($time_sets) ;
 		$best_times = array();
@@ -631,7 +609,8 @@ end-time range format will be a tuple containing strings ("12:30","1:30")
 						// echo "START3: ".$start." FINISH-NEXT3: ".$finish_next;
 				// echo "<br>";
 							
-							
+							echo "MY DEAR BOY ";
+							echo "<br>";
 							if(exceptor($start,$finish_next,$exceptions,$route)){
 								array_push($best_times,$start,$finish_next);
 								return $best_times;
@@ -667,12 +646,12 @@ end-time range format will be a tuple containing strings ("12:30","1:30")
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 17;
-		 $min  = 5;
-		  $day = 1;	
+		 $hour = 11;
+		 $min  = 20;
+		  // $day = 1;	
 		  
 		 //REAL TIME 
-		  	// $day = (int) $time_info['wday'];
+		  	$day = (int) $time_info['wday'];
 		// $hour = (int) $hour;	
 		// $min = (int) $min;
 		
