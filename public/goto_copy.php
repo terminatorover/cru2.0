@@ -194,26 +194,20 @@ function t_diff($t1,$t2){
 
 function  exceptor($start,$finish,$exceptions,$route){
 /**this takes in the "cleaned time array and then a list of exceptions in a dictionary format
-[ [day] is a the key  and  the value of that key is the list containing route,[(start-times range) ],[(end times range )]]
-a list of days 
-the route being considered 
+[ $route as the key  and  the value of that key is the list containing [(start-times range) ],[(end times range )]]
+for the route being considered we look it up in the exceptions array and FOR NOW WE GET THE 1 set of star/finish ranges 
+BUT we will later make this iterating through the list and of start/finish ranges and then if we enocuter an error we return False 
+and if we go through all non allowed result mappings then we just return True at the end of the function 
+
 start-time range format will be a tuple containing strings ("12:30","1:30")
 end-time range format will be a tuple containing strings ("12:30","1:30")
 
+the idea(not implemented yet ), for the given $route we use the exceptions dictionary to look up the exceptions and we iterate 
+through them and check if the current best times provided by the best time function is misleading since its in 
+the exceptions time range
 **/		
-		// $clean_array = array();
-		// $list_of_exception_days = array_keys($exceptions);//example [1,3,5,0]
-		// $len_arr = count($times_array);
-		 // var_dump($list_of_exception_days);
-		// echo ($exceptions[1][0]) ;
-		// echo $list_of_exception_days[0];
-		// foreach ($list_of_exception_days as $day ) {
-			// echo "DAY IS ".$day;
-				// echo "<br>";
-				// echo "EXCEPTION ROUTE".$exceptions[$day][0];
-				// echo "<br>";
-				// echo "GIVEN ROUTE".$route;
-				// echo "<br>";
+
+
 		$route = array_keys($exceptions);
 		$route = $route[0];
 		
@@ -221,15 +215,7 @@ end-time range format will be a tuple containing strings ("12:30","1:30")
 		 // echo "DAYS AREN'T THE SAME";
 		 // echo "<br>";
 		// }
-				// !( $exceptions[$day][0] == $route)
-				// if (False ) {//$exceptions[$day][0]  is the route associated with that exception
-					// // echo "NO MATCH";
-					// // echo "<br>";
-					// continue ;
-				// }else{
-					// for ( $itr = 0; $itr < $len_arr ; $itr ++){				
-						// $start = $times_array[$itr][0];
-						// $finish = $times_array[$itr][1];
+
 						echo "START ".$start." -------------------- "."FINISH".$finish;
 						echo "<br>";
 						echo "ROUTE ".$route;
@@ -256,7 +242,7 @@ end-time range format will be a tuple containing strings ("12:30","1:30")
 							return True; 
 						}
 					
-		return False;
+		return True;
 }
 
 //wrapper function for asking the db the types of queries that we are interested in 
@@ -528,7 +514,13 @@ end-time range format will be a tuple containing strings ("12:30","1:30")
 
 	/**
 		given an array of times figures out the next best time if there is none returns the string NO PATH
+		---->THE TOP OF THIS FUNCTION WILL CONTAIN ALL THE EXCEPTIONS 
 	**/
+	
+		
+	$exceptions = array();
+							echo "SO TRUE ";
+							$exceptions["ca_mf"] = [["16:00","17:51"],["18:00","19:00"]];
 
 		$len_arr = count($time_sets) ;
 		$best_times = array();
@@ -638,9 +630,7 @@ end-time range format will be a tuple containing strings ("12:30","1:30")
 						// echo "<br>";
 						// echo "START3: ".$start." FINISH-NEXT3: ".$finish_next;
 				// echo "<br>";
-							$exceptions = array();
-							echo "SO TRUE ";
-							$exceptions["ca_mf"] = [["11:32","11:51"],["12:00","13:00"]];
+							
 							
 							if(exceptor($start,$finish_next,$exceptions,$route)){
 								array_push($best_times,$start,$finish_next);
@@ -677,8 +667,8 @@ end-time range format will be a tuple containing strings ("12:30","1:30")
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 11;
-		 $min  = 30;
+		 $hour = 17;
+		 $min  = 5;
 		  $day = 1;	
 		  
 		 //REAL TIME 
