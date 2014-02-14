@@ -68,10 +68,106 @@ if (mysqli_connect_errno())
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
 
-  
-  
+  function ans_format($cruiser,$departure_place,$arrival_place,$departure_time,$arrival_time){
+  /**
+  takes in the parameters and outputs the string that will be displayed to the user in a nice format(which we can modify here )
+  **/
 
-  //helper functions checks if the difference between the two hours is >=2
+  return $cruiser." will leave ".$$departure_place." at ".standard_time($departure_time)." and
+				get to ".$arrival_place." at ".standard_time($arrival_time);		
+  }
+  
+  
+  function compare( $tset1, $tset2){
+  /**
+//takes in a "data structure" just a (route/start-finish time) .
+  //takes two of these and returns true if the first one is better than the second one 
+  **/
+  
+	$start1 = $tset1[3];
+	$finish1 = $tset1[4];
+  
+    $start2 = $tset2[3];
+    $finish2 = $tset2[4];
+	echo "START 1-->".$start1." --------"."FINSIH 1--->".$finish1;
+	echo "<br>";	
+	echo "START 2-->".$start2." --------"."FINSIH 2--->".$finish2;
+	
+	// /first check if the finish times are different and the one with the earlier finish time is better 
+	if ( !is_null(t1_vs_t2($finish2,$finish1)) && (t1_vs_t2($finish2,$finish1) == True ) ){
+		echo "FIRT ONE IS BETTER";
+		echo "<br>";
+		return True;
+	}elseif ( !is_null(t1_vs_t2($finish2,$finish1)) && (t1_vs_t2($finish2,$finish1) == False ) ){
+			echo "SECOND ONE IS BETTER";
+		echo "<br>";
+		return False;
+	}	
+	// /second check if the start times are different and the one with the later the start time the better the total time-set is  
+
+	if ( !is_null(t1_vs_t2($start1,$start2)) && (t1_vs_t2($start1,$start2) == True ) ){
+			echo "FIRT ONE IS BETTER";
+		echo "<br>";
+		return True;
+	}elseif ( !is_null(t1_vs_t2($start1,$start2)) && (t1_vs_t2($start1,$start2) == False ) ){
+			echo "SECOND ONE IS BETTER";
+		echo "<br>";
+		return False;
+	}
+	
+  }
+
+  //MERGE STEP
+  function merge_step( $arr1, $arr2){
+  /**
+  merge step essential for the mergesort 
+  **/
+  $res = array();
+  $ind1 = 0 ;
+  $ind2 = 0;
+  $len_a1 = count( $arr1);
+  $len_a2 = count( $arr2);
+	while( ($ind1 < $len_a1 )  && ($ind2 < $len_a2 )) {
+		$item_a = $arr1[$ind1];
+		$item_b = $arr2[$ind2];
+		if (compare( $item_a, $item_b )){
+			array_push($res, $item_a);
+			$ind1 ++ ;
+		}else{
+			array_push($res, $item_b);
+			$ind2 ++ ;
+		}
+  
+	}
+
+   for ( ; $ind1 < $len_a1 ; $ind1 ++){
+	$item = $arr1[$ind1];
+	array_push($res,$item );
+   }
+   for ( ; $ind2 < $len_a2 ; $ind2 ++){
+   $item = $arr2[$ind2];
+	array_push($res,$item );
+   }
+   
+   return $res; 
+  }
+ 
+function merge( $list_of_time_sets){
+/***
+	recursive implementation of merge sort 
+**/
+	$len_arr = count($list_of_time_sets);
+	if ($len_arr == 1){
+		return  $list_of_time_sets;
+	}else{
+		$first_half = array_slice( $list_of_time_sets, 0, $len_arr/2);
+		$second_half = array_slice( $list_of_time_sets, $len_arr/2);
+		return merge_step( merge( $first_half), merge( $second_half));
+		
+	}
+}
+
+ //helper functions checks if the difference between the two hours is >=2
 function t_diff($t1,$t2){
 		/**
 		This will come in handy in cases where for the fork case(aka hop on the cruiser now
@@ -120,6 +216,7 @@ function t_diff($t1,$t2){
 		
 		}
 }
+
   
 //helper for the next function compares two set of times that are imputed as strings
 //returns true if the first time is after the second
@@ -134,7 +231,10 @@ function t_diff($t1,$t2){
 		elseif ($t2h > $t1h){return False;
 		}else{ 
 				if ( $t1m > $t2m){ return True;}
-				elseif ($t2h > $t1h){return False;}
+				elseif ($t2m > $t1m){return False;}
+				else{
+					return NULL;
+				}
 			}
 		
 	}
@@ -144,8 +244,8 @@ function t_diff($t1,$t2){
 	/**
 	returns true if the inputed time is between the twyo given times 
 	**/
-		echo "INPUT TIME ---->".$input_time."[[[[".$before_side."--------".$after_side."]]]]]";
-		echo "<br>";
+		// echo "INPUT TIME ---->".$input_time."[[[[".$before_side."--------".$after_side."]]]]]";
+		// echo "<br>";
 		if (is_null($input_time)){
 			// echo "give me null";
 			// echo "<br>";
@@ -474,9 +574,9 @@ the exceptions time range
 		 	 for ( $itr = 0; $itr < $len_arr ; $itr ++){
 			$start = $clean_times[$itr][0];
 			$finish = $clean_times[$itr][1];
-			echo "<br>";
-			echo "START:: ".$start." FINISH:: ".$finish;
-			echo "<br>";
+			// echo "<br>";
+			// echo "START:: ".$start." FINISH:: ".$finish;
+			// echo "<br>";
 		 }
 
 
@@ -498,7 +598,7 @@ the exceptions time range
 	$exceptions = array();
 							
 	$exceptions["ca_mf"] = [[["16:00","17:51"],["17:59","19:00"]] , [["10:38","11:26"],["11:27","11:53"]]];
-	$exceptions["cb_mf"] = [[["16:00","17:51"],["17:59","19:00"]] ];
+	$exceptions["cb_mf"] = [[["16:00","17:51"],["17:59","19:00"]] ,[["10:38","11:26"],["11:27","11:53"]] ];
 
 		$len_arr = count($time_sets) ;
 		$best_times = array();
@@ -609,8 +709,8 @@ the exceptions time range
 						// echo "START3: ".$start." FINISH-NEXT3: ".$finish_next;
 				// echo "<br>";
 							
-							echo "MY DEAR BOY ";
-							echo "<br>";
+							// echo "MY DEAR BOY ";
+							// echo "<br>";
 							if(exceptor($start,$finish_next,$exceptions,$route)){
 								array_push($best_times,$start,$finish_next);
 								return $best_times;
@@ -646,8 +746,8 @@ the exceptions time range
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 11;
-		 $min  = 20;
+		 $hour = 6;
+		 $min  = 17;
 		  // $day = 1;	
 		  
 		 //REAL TIME 
@@ -740,7 +840,7 @@ the exceptions time range
 		//use the functions defined earlier to find the best start/stop times and 
 		
 		$genie = array(); //THIS IS WHERE THE STRINGS TELLING THE USER WHAT DO WILL BE STORED. THE MAGIC
-		
+		$genie2  = array (); //stores the suggested set of optimal start/stop times (this is queuing them for sorting )
 		foreach ($todays_cruisers as $a_route){
 		// echo "<br>";
 					echo "----------".$a_route." *************************************************************************************";
@@ -777,9 +877,15 @@ the exceptions time range
 				// $ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".$time_of_departure." and
 				// get to ".$for_user[$destination]." at ".$time_of_arrival;
 				array_push($genie,$ans);
-				
+				$t_set = array();
+				//now we construct a "data structure" that holds the cruiser name,point of departure, arrival and time of departure, arrival 
+				array_push($t_set,$route_to_cruiser_name[$a_route],$for_user[$departure],$for_user[$destination],$time_of_departure,$time_of_arrival );
+				// var_dump($t_set);
+				array_push($genie2,$t_set);
 			}	
 		}
+		// var_dump($genie2);
+		$genie = merge( $genie2);
 		return $genie ;
 	}
 	
@@ -797,7 +903,7 @@ the exceptions time range
 			echo "<li><a href=\"#\">"." THERE IS NO CRUISER THAT CAN GET YOU TO YOUR DESTINATION FROM YOUR POINT OF DEPARTURE AT THIS POINT "."</a></li>";
 		}
 		foreach ($list_of_results as $answer){	
-			echo "<li><a href=\"#\">".$answer."</a></li>";
+			echo "<li><a href=\"#\">".ans_format($answer[0],$answer[1],$answer[2],$answer[3],$answer[4])."</a></li>";
 		}
 	
 	echo "</ul>";
