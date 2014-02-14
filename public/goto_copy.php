@@ -739,7 +739,7 @@ the exceptions time range
 	}
 
 	
-	function combine($departure,$destination,$hour = NULL,$min = NULL,$con){
+	function combine($departure,$destination,$day= NULL, $hour = NULL,$min = NULL,$con){
 		/**
 		Takes in the the db connection point of departure/destination and time(if given by the user or will be
 		current time by default )and  puts the best time/s(and their respective cruiser) 
@@ -755,14 +755,14 @@ the exceptions time range
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 9;
-		 $min  = 05;
-		 $day = 5;	
+		 // $hour = 9;
+		 // $min  = 05;
+		 // $day = 5;	
 		  
 		 //REAL TIME 
-		  	// $day = (int) $time_info['wday'];
-		// $hour = (int) $hour;	
-		// $min = (int) $min;
+		  	$day = (int) $time_info['wday'];
+		$hour = (int) $hour;	
+		$min = (int) $min;
 		
 		
 		// echo $hour ;
@@ -898,9 +898,12 @@ the exceptions time range
 	//THIS COULD ALSO BE THE POINT WHERE YOU GET TIME INPUT FROM THE USER
 	$FROM =  $_GET["from"];
 	$TO = $_GET["to"];
-	
+		 $hour = 9;
+		 $min  = 05;
+		 $day = 5;	
 	//the db connection will be there (because this will be used as an include )
-	$list_of_results = combine($FROM,$TO,NULL,NULL,$con);
+	$list_of_results = combine($FROM,$TO,NULL,NULL,NULL,$con);
+	// $list_of_results = combine($FROM,$TO,$day,$hour,$min,$con);
 	
 	echo "<ul class=\"nav nav-pills\">";
 			echo "<li><a href=\"#\">". "Results are ordered by time of arrival"."</a></li>";
