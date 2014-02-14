@@ -755,9 +755,9 @@ the exceptions time range
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 8;
-		 $min  = 11;
-		 $day = 1;	
+		 $hour = 9;
+		 $min  = 05;
+		 $day = 5;	
 		  
 		 //REAL TIME 
 		  	// $day = (int) $time_info['wday'];
@@ -903,6 +903,7 @@ the exceptions time range
 	$list_of_results = combine($FROM,$TO,NULL,NULL,$con);
 	
 	echo "<ul class=\"nav nav-pills\">";
+			echo "<li><a href=\"#\">". "Results are ordered by time of arrival"."</a></li>";
 		if ( count($list_of_results) == 0 ){
 			echo "<li><a href=\"#\">"." THERE IS NO CRUISER THAT CAN GET YOU TO YOUR DESTINATION FROM YOUR POINT OF DEPARTURE AT THIS POINT "."</a></li>";
 		}
