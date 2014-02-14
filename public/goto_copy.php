@@ -41,7 +41,7 @@ top: -1px; " >GATE CRUISER</h2>
 	</section>
 	
 	<div class="row">
-	<section class="col-sm-5 col-sm-offset-4 " style=" opacity: .9; /* background-color: rgb(62, 111, 69); */ color: black; background-color: rgba(7, 22, 27, 0.91);  ">
+	<section class="col-sm-4 col-sm-offset-4 " style=" opacity: .9; /* background-color: rgb(62, 111, 69); */ color: black; background-color: rgba(7, 22, 27, 0.91);  ">
 		<?php 
 error_reporting(E_ERROR);
 	// $hostname = null;
@@ -597,9 +597,18 @@ the exceptions time range
 		
 	$exceptions = array();
 							
-	$exceptions["ca_mf"] = [[["16:00","17:51"],["17:59","19:00"]] , [["10:38","11:26"],["11:27","11:53"]]];
-	$exceptions["cb_mf"] = [[["16:00","17:51"],["17:59","19:00"]] ,[["10:38","11:26"],["11:27","11:53"]] ];
-
+	$exceptions["ca_mf"] = [ [["16:00","17:51"],["17:59","19:00"]] ,  [["11:29","11:53"],["12:29","12:59"]]   /**[["12:02","12:24"],["12:01","12:59"]] **/ ];
+	$exceptions["cb_mf"] = [ [["16:00","17:51"],["17:59","19:00"]] ,  [["11:02","11:26"],["12:01","12:23"]] ,  [["19:59","20:49"],["21:30","21:50"]]/** [["21:30","21:49"],["21:59","22:50"]]  **/ ];
+	$exceptions["cc_mf"] = [  ]; //no wholes in the cc_mf routes table 
+	$exceptions["cd_mf"] = [  ]; //no wholes in the cd_mf  routes table 
+	$exceptions["ca_sat"] = [ [["20:59","21:30"],["21:59","22:56"]]  ]; 
+	$exceptions["cb_sat"] = [  [["19:59","20:49"],["21:30","21:50"]] ]; 
+	$exceptions["ca_sun"] = [  [["15:59","16:30"],["16:59","17:57"]] ]; 
+	$exceptions["cb_sun"] = [  [["14:59","15:57"],["16:28","16:57"]] ]; 
+	$exceptions["ce_w_s"] = [];
+	
+	
+	
 		$len_arr = count($time_sets) ;
 		$best_times = array();
 		if($len_arr == 0){//if we don't get any results from the cleaned array of start/finish times 
@@ -746,7 +755,7 @@ the exceptions time range
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 7;
+		 $hour = 8;
 		 $min  = 11;
 		 $day = 1;	
 		  
