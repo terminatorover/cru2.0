@@ -73,15 +73,15 @@ if (mysqli_connect_errno())
   takes in the parameters and outputs the string that will be displayed to the user in a nice format(which we can modify here )
   **/
 
-  return $cruiser." will leave ".$$departure_place." at ".standard_time($departure_time)." and
+  return $cruiser." will leave ".$departure_place." at ".standard_time($departure_time)." and
 				get to ".$arrival_place." at ".standard_time($arrival_time);		
   }
   
   
   function compare( $tset1, $tset2){
   /**
-//takes in a "data structure" just a (route/start-finish time) .
-  //takes two of these and returns true if the first one is better than the second one 
+//takes in a "data structure" just a (cruiser-being-used,start-position, finish-position, start-time, finish time) .
+  //takes two of these and returns true if the first one is "better" than the second one 
   **/
   
 	$start1 = $tset1[3];
@@ -157,7 +157,7 @@ function merge( $list_of_time_sets){
 	recursive implementation of merge sort 
 **/
 	$len_arr = count($list_of_time_sets);
-	if ($len_arr == 1){
+	if ($len_arr <= 1){
 		return  $list_of_time_sets;
 	}else{
 		$first_half = array_slice( $list_of_time_sets, 0, $len_arr/2);
@@ -755,14 +755,14 @@ the exceptions time range
 		// &&&
 		
 		// //Artificial testing for time 
-		 // $hour = 9;
-		 // $min  = 05;
-		 // $day = 5;	
+		 $hour = 235;
+		 $min  = 05;
+		 $day = 0;	
 		  
 		 //REAL TIME 
-		  	$day = (int) $time_info['wday'];
-		$hour = (int) $hour;	
-		$min = (int) $min;
+		  	// $day = (int) $time_info['wday'];
+		// $hour = (int) $hour;	
+		// $min = (int) $min;
 		
 		
 		// echo $hour ;
@@ -865,14 +865,14 @@ the exceptions time range
 				$time_of_arrival = $show_me_how[1];
 				// echo $time_of_arrival."000000000000000000000000000".$time_of_departure;
 				// echo "<br>";
+				//---------------------------------------->CURFEW <----------------------------------------------
 				//This check is for the quirky situation on M/T at 11pm-12am range when we can't use the bus if our 
 				//arrival time (at destination )is after 12am 
 				if (( ( $day < 3) &&( $day > 0))  && t1_vs_t2($time_of_arrival,"23:59")){
 					// echo "WF";
 						continue ;
 				}
-
-				
+				//---------------------------------------->CURFEW <----------------------------------------------
 				
 				//HERE LAY THE OLD METHOD WHERE I CONSTRUCTED THE STRING THAT THE USER GOT (loop through them later to display the results)
 				// $ans = $route_to_cruiser_name[$a_route]." will leave ".$for_user[$departure]." at ".standard_time($time_of_departure)." and
@@ -889,6 +889,7 @@ the exceptions time range
 		}
 		
 		//------------------------------------>>>> SORT OUR RESULTS HERE 
+		// echo "SIZE OF ARRAY ".count($genie2);
 		$genie = merge( $genie2);
 		return $genie ;
 	}
