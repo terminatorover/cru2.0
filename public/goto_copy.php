@@ -44,19 +44,19 @@ top: -1px; " >GATE CRUISER</h2>
 	<section class="col-sm-4 col-sm-offset-4 " style=" opacity: .9; /* background-color: rgb(62, 111, 69); */ color: black; background-color: rgba(7, 22, 27, 0.91);  ">
 		<?php 
 error_reporting(E_ERROR);
-	// $hostname = null;
-	// $username = "root";
-	// $password = "";
-	// $database = "cruiser_app";
-	// $port = null;
-	// $socket = "/cloudsql/colgate-cruiser:get-cru5";
+	$hostname = null;
+	$username = "root";
+	$password = "";
+	$database = "cruiser_app";
+	$port = null;
+	$socket = "/cloudsql/colgate-cruiser:get-cru5";
 	
-		$hostname = 'localhost:3306';
-$username = "robera";
-$password = "password";
-$database = "cruiser_app";
-$port = null;
-$socket = null;
+		// $hostname = 'localhost:3306';
+// $username = "robera";
+// $password = "password";
+// $database = "cruiser_app";
+// $port = null;
+// $socket = null;
 
 
 
@@ -83,7 +83,9 @@ if (mysqli_connect_errno())
 //takes in a "data structure" just a (cruiser-being-used,start-position, finish-position, start-time, finish time) .
   //takes two of these and returns true if the first one is "better" than the second one 
   **/
-  
+  		$t1 = explode(":",$t1);
+		$t1h = (int) $t1[0];
+		$t1m = (int) $t1[1];
 	$start1 = $tset1[3];
 	$finish1 = $tset1[4];
   
@@ -92,28 +94,53 @@ if (mysqli_connect_errno())
 	// echo "START 1-->".$start1." --------"."FINSIH 1--->".$finish1;
 	// echo "<br>";	
 	// echo "START 2-->".$start2." --------"."FINSIH 2--->".$finish2;
-	
+		$start1_e = explode(":",$start1);
+		$start1_h = (int) $start1_e[0];
+		
+		$finish1_e = explode(":",$finish1);
+		$finish1_h = (int) $finish1_e[0];	
+		
+		$start2_e = explode(":",$start2);
+		$start2_h = (int) $start2_e[0];
+		
+		$finish2_e = explode(":",$finish2);
+		$finish2_h = (int) $finish2_e[0];
+		
+	if (!( (($finish1_h == 24) && ($finish2_h <6 ) )   ||  (($finish1_h < 6) && ($finish2_h == 24) ) )){
+	//no comparing 12 and past 12am since 24 is clearly bigger than 1
 	// /first check if the finish times are different and the one with the earlier finish time is better 
-	if ( !is_null(t1_vs_t2($finish2,$finish1)) && (t1_vs_t2($finish2,$finish1) == True ) ){
-		// echo "FIRST ONE IS BETTER";
-		// echo "<br>";
-		return True;
-	}elseif ( !is_null(t1_vs_t2($finish2,$finish1)) && (t1_vs_t2($finish2,$finish1) == False ) ){
-			// echo "SECOND ONE IS BETTER";
-		// echo "<br>";
-		return False;
-	}	
-	// /second check if the start times are different and the one with the later the start time the better the total time-set is  
-
-	if ( !is_null(t1_vs_t2($start1,$start2)) && (t1_vs_t2($start1,$start2) == True ) ){
+	
+		if ( !is_null(t1_vs_t2($finish2,$finish1)) && (t1_vs_t2($finish2,$finish1) == True ) ){
 			// echo "FIRST ONE IS BETTER";
-		// echo "<br>";
+			// echo "<br>";
+			return True;
+		}elseif ( !is_null(t1_vs_t2($finish2,$finish1)) && (t1_vs_t2($finish2,$finish1) == False ) ){
+				// echo "SECOND ONE IS BETTER";
+			// echo "<br>";
+			return False;
+		}	
+		// /second check if the start times are different and the one with the later the start time the better the total time-set is  
+
+		if ( !is_null(t1_vs_t2($start1,$start2)) && (t1_vs_t2($start1,$start2) == True ) ){
+				// echo "FIRST ONE IS BETTER";
+			// echo "<br>";
+			return True;
+		}elseif ( !is_null(t1_vs_t2($start1,$start2)) && (t1_vs_t2($start1,$start2) == False ) ){
+				// echo "SECOND ONE IS BETTER";
+			// echo "<br>";
+			return False;
+		}
+	}else{
+		if (($finish1_h == 24 ) && ( $finish2_h < 6 )){
 		return True;
-	}elseif ( !is_null(t1_vs_t2($start1,$start2)) && (t1_vs_t2($start1,$start2) == False ) ){
-			// echo "SECOND ONE IS BETTER";
-		// echo "<br>";
-		return False;
+		}else{
+		return False ;
+		}
+	
+	
+	
 	}
+	
 	
   }
 
@@ -755,15 +782,15 @@ the exceptions time range
 		// &&&
 		
 		// //Artificial testing for time 
-		 $hour = 235;
-		 $min  = 05;
-		 $day = 0;	
+		 // $hour = 21	;
+		 // $min  = 58;
+		 // $day = 5;	
 		  
 		 //REAL TIME 
-		  	// $day = (int) $time_info['wday'];
-		// $hour = (int) $hour;	
-		// $min = (int) $min;
-		
+		  	$day = (int) $time_info['wday'];
+			$hour = (int) $hour;	
+			$min = (int) $min;
+			
 		
 		// echo $hour ;
 		if(is_numeric ($hour)){
@@ -899,9 +926,9 @@ the exceptions time range
 	//THIS COULD ALSO BE THE POINT WHERE YOU GET TIME INPUT FROM THE USER
 	$FROM =  $_GET["from"];
 	$TO = $_GET["to"];
-		 $hour = 9;
-		 $min  = 05;
-		 $day = 5;	
+		 // $hour = 9;
+		 // $min  = 05;
+		 // $day = 5;	
 	//the db connection will be there (because this will be used as an include )
 	$list_of_results = combine($FROM,$TO,NULL,NULL,NULL,$con);
 	// $list_of_results = combine($FROM,$TO,$day,$hour,$min,$con);
@@ -909,7 +936,7 @@ the exceptions time range
 	echo "<ul class=\"nav nav-pills\">";
 			echo "<li><a href=\"#\">". "Results are ordered by time of arrival"."</a></li>";
 		if ( count($list_of_results) == 0 ){
-			echo "<li><a href=\"#\">"." THERE IS NO CRUISER THAT CAN GET YOU TO YOUR DESTINATION FROM YOUR POINT OF DEPARTURE AT THIS POINT "."</a></li>";
+			echo "<li><a href=\"#\">"." THERE IS NO CRUISER THAT CAN GET YOU TO YOUR DESTINATION FROM YOUR POINT OF DEPARTURE AT THIS TIME OR LATER TODAY."."</a></li>";
 		}
 		foreach ($list_of_results as $answer){	
 			echo "<li><a href=\"#\">".ans_format($answer[0],$answer[1],$answer[2],$answer[3],$answer[4])."</a></li>";
