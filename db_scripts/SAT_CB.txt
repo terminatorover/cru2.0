@@ -1,0 +1,38 @@
+1 Bookstore 12:00p 1:00p 2:00p 3:00p 4:00p
+2 Whitnall_Field 12:03p 1:03p 2:03p 3:03p 4:03p
+3 Case_Geyer_Library 12:06p 1:06p 2:06p 3:06p 4:06p
+4 Perrson_Hall_a 12:09p 1:09p 2:09p 3:09p 4:09p
+5 Frank_Dining_Hall 12:12p 1:12p 2:12p 3:12p 4:12p
+6 Perrson_Hall_b 12:15p 1:15p 2:15p 3:15p 4:15p
+7 Academic_Dr 12:18p 1:18p 2:18p 3:18p 4:18p
+8 Gate_House 12:21p 1:21p 2:21p 3:21p 4:21p
+9 Kendrick_and_Broad 12:24p 1:24p 2:24p 3:24p 4:24p
+10 Townhouses 12:28p 1:28p 2:28p 3:28p 4:28p
+11 Cutten_Hall 12:33p 1:33p 2:33p 3:33p 4:33p
+12 104_Broad_St 12:36p 1:36p 2:36p 3:36p 4:36p
+13 University_Ct_Burch 12:39p 1:39p 2:39p 3:39p 4:39p
+14 Parker_Apartments 12:42p 1:42p 2:42p 3:42p 4:42p
+15/16 Newell_Apartments 12:45p 1:45p 2:45p 3:45p 4:45p
+17 SOMAC 12:48p 1:48p 2:48p 3:48p 4:48p
+18 Hamilton_Airport 11:51a 12:51p 1:51p 2:51p 3:51p 4:51p
+19 Parrys_Plaza 2:54p 3:54p 4:54p
+20 Price_Chopper 2:56p 3:56p 4:56p
+1 Bookstore 6:00p 7:00p 8:00p 10:00p 11:00p 12:00a 1:00a 2:00a
+2 Whitnall_Field 6:03p 7:03p 8:03p 10:03p 11:03p 12:03a 1:03a 2:03a
+3 Case_Geyer_Library 6:06p 7:06p 8:06p 10:06p 11:06p 12:06a 1:06a 2:06a
+4 Perrson_Hall_a 6:09p 7:09p 8:09p 10:09p 11:09p 12:09a 1:09a 2:09a
+5 Frank_Dining_Hall 6:12p 7:12p 8:12p 10:12p 11:12p 12:12a 1:12a 2:12a
+6 Perrson_Hall_b 6:15p 7:15p 8:15p 10:15p 11:15p 12:15a 1:15a 2:15a
+7 Academic_Dr 6:18p 7:18p 8:18p 10:18p 11:18p 12:18a 1:18a 2:18a
+8 Gate_House 6:21p 7:21p 8:21p 10:21p 11:21p 12:21a 1:21a 2:21a
+9 Kendrick_and_Broad 6:24p 7:24p 8:24p 10:24p 11:24p 12:24a 1:24a 2:24a
+10 Townhouses 6:28p 7:28p 8:28p 10:28p 11:28p 12:28a 1:28a 2:28a
+11 Cutten_Hall 6:33p 7:33p 8:33p 9:33p 10:33p 11:33p 12:33a 1:33a 2:33a
+12 104_Broad_St 6:36p 7:36p 8:36p 9:36p 10:36p 11:36p 12:36a 1:36a 2:36a
+13 University_Ct_Burch 6:39p 7:39p 8:39p 9:39p 10:39p 11:39p 12:39a 1:39a 2:39a
+14 Parker_Apartments 6:42p 7:42p 8:42p 9:42p 10:42p 11:42p 12:42a 1:42a 2:42a
+15/16 Newell_Apartments 6:45p 7:45p 8:45p 9:45p 10:45p 11:45p 12:45a 1:45a 2:45a
+17 SOMAC 6:48p 7:48p 8:48p 9:48p 10:48p 11:48p 12:48a 1:48a 2:48a
+18 Hamilton_Airport
+19 Parrys_Plaza 6:54p 7:54p
+20 Price_Chopper 6:56p 7:56p

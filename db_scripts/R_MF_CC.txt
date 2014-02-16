@@ -1,0 +1,10 @@
+1/2 Newell_Apartments 7:30a 8:00a 8:30a 9:00a 9:30a 10:00a 10:30a 11:00a 11:30a
+3 University_Ct_Burch 7:31a 8:01a 8:31a 9:01a 9:31a 10:01a 10:31a 11:01a 11:31a
+4 Parker_Apartments 7:34a 8:04a 8:34a 9:04a 9:34a 10:04a 10:34a 11:04a 11:34a
+5 110_Broad_St 7:37a 8:07a 8:37a 9:07a 9:37a 10:07a 10:37a 11:07a 11:37a
+6 Whitnall_Field 7:40a 8:10a 8:40a 9:10a 9:40a 10:10a 10:40a 11:10a 11:40a
+7 Case_Geyer_Library 7:43a 8:13a 8:43a 9:13a 9:43a 10:13a 10:43a 11:13a 11:43a
+8 Perrson_Hall_a 7:46a 8:16a 8:46a 9:16a 9:46a 10:16a 10:46a 11:16a 11:46a
+9 Frank_Dining_Hall 7:49a 8:19a 8:49a 9:19a 9:49a 10:19a 10:49a 11:19a 11:49a
+10 Perrson_Hall_b 7:52a 8:22a 8:52a 9:22a 9:52a 10:22a 10:52a 11:22a 11:52a
+11 Kendrick_and_Broad 7:56a 8:26a 8:56a 9:26a 9:56a 10:26a 10:56a 11:26a 11:56a

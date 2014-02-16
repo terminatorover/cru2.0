@@ -1,0 +1,18 @@
+1 Village_Green 12:00p 1:00p 2:00p 3:00p 4:00p 5:00p 6:00p 7:00p 8:00p
+1a Price_Chopper 3:03p 4:03p 5:03p 6:03p 7:03p 8:03p
+1b Parrys_Plaza 3:05p 4:05p 5:05p
+2 SOMAC 12:09p 1:09p 2:09p 3:09p 4:09p 5:09p 6:09p 7:09p 8:09p
+3 Newell_Apartments 12:12p 1:12p 2:12p 3:12p 4:12p 5:12p 6:12p 7:12p 8:12p
+4 University_Ct_Burch 12:15p 1:15p 2:15p 3:15p 4:15p 5:15p 6:15p 7:15p 8:15p
+5 Parker_Apartments 12:18p 1:18p 2:18p 3:18p 4:18p 5:18p 6:18p 7:18p 8:18p
+6 110_Broad_St 12:21p 1:21p 2:21p 3:21p 4:21p 5:21p 6:21p 7:21p 8:21p
+7 Cutten_Hall 12:24p 1:24p 2:24p 3:24p 4:24p 5:24p 6:24p 7:24p 8:24p
+8 Townhouses 12:28p 1:28p 2:28p 3:28p 4:28p 5:28p 6:28p 7:28p 8:28p
+9 Whitnall_Field 12:33p 1:33p 2:33p 3:33p 5:33p 6:33p 7:33p 8:33p
+10 Case_Geyer_Library 12:36p 1:36p 2:36p 3:36p 5:36p 6:36p 7:36p 8:36p
+11 Academic_Dr 12:39p 1:39p 2:39p 3:39p 5:39p 6:39p 7:39p 8:39p
+12 Gate_House 12:42p 1:42p 2:42p 3:42p 5:42p 6:42p 7:42p 8:42p
+13 Perrson_Hall_a 12:45p 1:45p 2:45p 3:45p 5:45p 6:45p 7:45p 8:45p
+14 Frank_Dining_Hall 12:48p 1:48p 2:48p 3:48p 5:48p 6:48p 7:48p 8:48p
+15 Perrson_Hall_b 12:51p 1:51p 2:51p 3:51p 5:51p 6:51p 7:51p 8:51p
+16 Kendrick_and_Broad 12:55p 1:55p 2:55p 3:55p 5:55p 6:55p 7:55p 8:55p

@@ -1,0 +1,36 @@
+1 Village_Green 12:00p 1:00p 2:00p 3:00p 4:00p
+1a Price_Chopper 3:03p 4:03p
+1b Parrys_Plaza 3:05p 4:05p
+2 SOMAC 12:09p 1:09p 2:09p 3:09p 4:09p
+3/4 Newell_Apartments 12:12p 1:12p 2:12p 3:12p 4:12p
+5 University_Ct_Burch 12:15p 1:15p 2:15p 3:15p 4:15p
+6 Parker_Apartments 12:18p 1:18p 2:18p 3:18p 4:18p
+7 110_Broad_St 12:21p 1:21p 2:21p 3:21p 4:21p
+8 Cutten_Hall 12:24p 1:24p 2:24p 3:24p 4:24p
+9 Townhouses 12:28p 1:28p 2:28p 3:28p 4:28p
+10 Whitnall_Field 12:33p 1:33p 2:33p 3:33p 4:33p
+11 Case_Geyer_Library 12:36p 1:36p 2:36p 3:36p 4:36p
+12 Academic_Dr 12:39p 1:39p 2:39p 3:39p 4:39p
+13 Gate_House 12:42p 1:42p 2:42p 3:42p 4:42p
+14 Perrson_Hall_a 12:45p 1:45p 2:45p 3:45p 4:45p
+15 Frank_Dining_Hall 12:48p 1:48p 2:48p 3:48p 4:48p
+16 Perrson_Hall_b 12:51p 1:51p 2:51p 3:51p 4:51p
+17 Kendrick_and_Broad 12:55p 1:55p 2:55p 3:55p 4:55p
+1 Village_Green 6:00p 7:00p 8:00p 9:00p 10:00p 11:00p 12:00a 1:00a 2:00a
+1a Price_Chopper 6:03p 7:03p 8:03p
+1b Parrys_Plaza 6:05p 7:05p
+2 SOMAC 6:09p 7:09p 8:09p 9:09p 10:09p 11:09p 12:09a 1:09a 2:09a
+3/4 Newell_Apartments 6:12p 7:12p 8:12p 9:12p 10:12p 11:12p 12:12a 1:12a 2:12a
+5 University_Ct_Burch 6:15p 7:15p 8:15p 9:15p 10:15p 11:15p 12:15a 1:15a 2:15a
+6 Parker_Apartments 6:18p 7:18p 8:18p 9:18p 10:18p 11:18p 12:18a 1:18a 2:18a
+7 110_Broad_St 6:21p 7:21p 8:21p 9:21p 10:21p 11:21p 12:21a 1:21a 2:21a
+8 Cutten_Hall 6:24p 7:24p 8:24p 9:24p 10:24p 11:24p 12:24a 1:24a 2:24a
+9 Townhouses 6:28p 7:28p 8:28p 9:28p 10:28p 11:28p 12:28a 1:28a 2:28a
+10 Whitnall_Field 6:33p 7:33p 8:33p 10:33p 11:33p 12:33a 1:33a 2:33a
+11 Case_Geyer_Library 6:36p 7:36p 8:36p 10:36p 11:36p 12:36a 1:36a 2:36a
+12 Academic_Dr 6:39p 7:39p 8:39p 10:39p 11:39p 12:39a 1:39a 2:39a
+13 Gate_House 6:42p 7:42p 8:42p 10:42p 11:42p 12:42a 1:42a 2:42a
+14 Perrson_Hall_a 6:45p 7:45p 8:45p 10:45p 11:45p 12:45a 1:45a 2:45a
+15 Frank_Dining_Hall 6:48p 7:48p 8:48p 10:48p 11:48p 12:48a 1:48a 2:48a
+16 Perrson_Hall_b 6:51p 7:51p 8:51p 10:51p 11:51p 12:51a 1:51a 2:51a
+17 Kendrick_and_Broad 6:55p 7:55p 8:55p 10:55p 11:55p 12:55a 1:55a 2:55a

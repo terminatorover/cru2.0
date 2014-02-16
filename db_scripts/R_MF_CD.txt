@@ -1,0 +1,20 @@
+1 Townhouses 7:30a 8:00a 8:30a 9:00a 9:30a 10:00a 10:30a 11:00a 11:30a
+2 Cutten_Hall 7:34a 8:04a 8:34a 9:04a 9:34a 10:04a 10:34a 11:04a 11:34a
+3 Whitnall_Field 7:37a 8:07a 8:37a 9:07a 9:37a 10:07a 10:37a 11:07a 11:37a
+4 Case_Geyer_Library 7:40a 8:10a 8:40a 9:10a 9:40a 10:10a 10:40a 11:10a 11:40a
+5 Perrson_Hall_a 7:43a 8:13a 8:43a 9:13a 9:43a 10:13a 10:43a 11:13a 11:43a
+6 Frank_Dining_Hall 7:46a 8:16a 8:46a 9:16a 9:46a 10:16a 10:46a 11:16a 11:46a
+7 Perrson_Hall_b 7:49a 8:19a 8:49a 9:19a 9:49a 10:19a 10:49a 11:19a 11:49a
+8 Kendrick_and_Broad 7:53a 8:23a 8:53a 9:23a 9:53a 10:23a 10:53a 11:23a 11:53a
+1 Townhouses 12:00p 12:35p 1:10p 1:45p 2:20p 2:55p 3:30p 4:05p
+2 Cutten_Hall
+3 Whitnall_Field 12:05p 12:40p 1:15p 1:50p 2:25p 3:00p 3:35p 4:10p
+4 Case_Geyer_Library 12:07p 12:42p 1:17p 1:52p 2:27p 3:02p 3:37p 4:12p
+5 Perrson_Hall_a 12:09p 12:44p 1:19p 1:54p 2:29p 3:04p 3:39p 4:14p
+6 Frank_Dining_Hall 12:12p 12:47p 1:22p 1:57p 2:32p 3:07p 3:42p 4:17p
+7 Perrson_Hall_b 12:14p 12:49p 1:24p 1:59p 2:34p 3:09p 3:44p 4:19p
+8 Kendrick_and_Broad 12:18p 12:53p 1:28p 2:03p 2:38p 3:13p 3:48p 4:23p
+9/10 Newell_Apartments 12:23p 12:58p 1:33p 2:08p 2:43p 3:18p 3:53p 4:28p
+11 University_Ct_Burch 12:26p 1:01p 1:36p 2:11p 2:46p 3:21p 3:56p 4:31p
+12 Parker_Apartments 12:28p 1:03p 1:38p 2:13p 2:48p 3:23p 3:58p 4:33p
+13 110_Broad_St 12:30p 1:05p 1:40p 2:15p 2:50p 3:25p 4:00p 4:35p

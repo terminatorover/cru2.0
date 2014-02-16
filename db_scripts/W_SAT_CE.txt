@@ -1,0 +1,9 @@
+1 Bookstore 11:00p 11:40p 12:20a 1:00a 1:40a 2:20a 3:00a
+2 Townhouses 11:05p 11:45p 12:25a 1:05a 1:45a 2:25a 3:05a
+3 Cutten_Hall 11:08p 11:48p 12:28a 1:08a 1:48a 2:28a 3:08a
+4 Perrson_Hall_a 11:14p 11:54p 12:34a 1:14a 1:54a 2:34a 3:14a
+5 Frank_Dining_Hall 11:17p 11:57p 12:37a 1:17a 1:57a 2:37a 3:17a
+6 Perrson_Hall_b 11:19p 11:59p 12:39a 1:19a 1:59a 2:39a 3:19a
+7 University_Ct_Burch 11:25p 12:05a 12:45a 1:25a 2:05a 2:45a 3:25a
+8 Parker_Apartments 11:27p 12:07a 12:47a 1:27a 2:07a 2:47a 3:27a
+9/10 Newell_Apartments 11:30p 12:10a 12:50a 1:30a 2:10a 2:50a 3:30a
