@@ -50,10 +50,10 @@
 		</section>
 		<!-- this is the page header  --> 
 
-		<button class="btn btn-danger btn btn-danger col-xs-8 col-xs-offset-2 col-sm-2 col-sm-offset-5 toggle-left" style ="margin-top:3em; font-family: 'Graduate', cursive;" > Custom Day/Time</button>
+		<button class="btn btn-danger btn btn-danger col-xs-8 col-xs-offset-2 col-sm-2 col-sm-offset-5 toggle-left" style =" font-family: 'Graduate', cursive;" > Custom Day/Time</button>
 
-		<section id="contain" class="row">
-	 <form action="goto_copy.php" action="post" class="col-xs-8 col-xs-offset-2">
+	<section id="contain" class="row">
+	 <form id="place_form" name="place_form"   method="GET" action="goto_copy.php" class="col-xs-8 col-xs-offset-2">
 	 
 			<!-- ----------------------------------------------------------------------------------------------------------------->
 			<div class="row">
@@ -123,9 +123,7 @@
 				<!-- this is the BUTTON  --> 
 				 
 				</div>
-			<div class="row">
-					<button type="submit"  class="btn btn-danger col-xs-12 col-sm-6 col-sm-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >GO</button>
-			</div>
+			
 			</div>
 
 
@@ -133,6 +131,12 @@
 
 		
 	 </form>
+
+	 <!-- this is the BUTTON  --> 
+
+	<div class="row">
+		<button type="submit"  value="Submit Form 1 & 2" onClick="submitAllDocumentForms()" class="btn btn-danger col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >GO</button>
+	</div>
 	</section>
 
 	</div>
@@ -140,7 +144,7 @@
 	<!-- Your left Slidebar content. -->
 	<div class="sb-slidebar sb-left">
 						<!-- this is the side bar itself  --> 	
-			<form action="goto_copy.php" action="post">							
+	<form id="time_form" name="time_form"   method="GET" action="goto_copy.php">							
 							<div class="btn-group  " style="width:100%;padding-right: 0px; padding-bottom: 1.6em; padding-left:0px; text-shadow: black 0.1em 0.1em 0.2em;"  >
 							  <!--DAY SELECTOR-->
 							  <button type="button" class="btn btn-default res"  style="padding-right: 14px;width: 100%;; background-color:#B0312A; font-family: 'Graduate', cursive; border: 0px; padding-bottom: 1.6em; padding-top: 1.5em;padding-top: 1.5em;">
@@ -237,6 +241,36 @@ mySlidebars.toggle('left');
  
 });
 </script>
+
+
+<SCRIPT LANGUAGE="JavaScript" type="text/javascript">
+/* Collect all forms in document to one and post it */
+function submitAllDocumentForms() {
+var arrDocForms = document.getElementsByTagName('form');
+var formCollector = document.createElement("form");
+with(formCollector)
+{
+method = "get";
+action = "goto_copy.php";
+name = "formCollector";
+id = "formCollector";
+}
+for(var ix=0;ix<arrDocForms.length;ix++) {
+appendFormVals2Form(arrDocForms[ix], formCollector);
+}
+document.body.appendChild(formCollector);
+formCollector.submit();
+
+}
+/* Function: add all elements from ``frmCollectFrom´´ and append them to ``frmCollector´´ before returning ``frmCollector´´*/
+function appendFormVals2Form(frmCollectFrom, frmCollector) {
+var frm = frmCollectFrom.elements;
+for(var ix = 0 ; ix < frm.length ; ix++)
+frmCollector.appendChild(frm[ix]);
+return frmCollector;
+}
+
+</SCRIPT>
 
 	<script src="js/less.js" type="text/javascript"></script>
 
