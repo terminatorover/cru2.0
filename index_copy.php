@@ -135,7 +135,7 @@
 	 <!-- this is the BUTTON  --> 
 
 	<div class="row">
-		<button type="submit"  value="Submit Form 1 & 2" onClick="submitAllDocumentForms()" class="btn btn-danger col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >GO</button>
+		<button type="submit"  value="Submit Form 1 & 2" onClick="submitAllDocumentForms()" class="btn btn-danger col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4" style ="margin-top:3em; font-family: 'Graduate', cursive;" >GO</button>
 	</div>
 	</section>
 
