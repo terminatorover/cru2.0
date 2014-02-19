@@ -44,19 +44,20 @@ top: -1px; " >GATE CRUISER</h2>
 	<section class="col-sm-4 col-sm-offset-4 " style=" opacity: .9; /* background-color: rgb(62, 111, 69); */ color: black; background-color: rgba(7, 22, 27, 0.91);  ">
 		<?php 
 error_reporting(E_ERROR);
-	$hostname = null;
-	$username = "root";
-	$password = "";
-	$database = "cruiser_app";
-	$port = null;
-	$socket = "/cloudsql/colgate-cruiser:get-cru5";
+	// $hostname = null;
+	// $username = "root";
+	// $password = "";
+	// $database = "cruiser_app";
+	// $port = null;
+	// $socket = "/cloudsql/colgate-cruiser:get-cru5";	
 	
-		// $hostname = 'localhost:3306';
-// $username = "robera";
-// $password = "password";
-// $database = "cruiser_app";
-// $port = null;
-// $socket = null;
+		$hostname = 'localhost:3306';
+$username = "robera";
+$password = "password";
+$database = "cruiser_app";
+$port = null;
+$socket = null;
+
 
 
 
@@ -775,24 +776,32 @@ the exceptions time range
 		**/
 		date_default_timezone_set("America/New_York");
 		$time_info = getdate();//inquire the current date/time
-		if ($hour == NULL  || $min == NULL  ){	
-			$hour = $time_info['hours'];
-			$min = $time_info['minutes'];
+		if ( is_null($hour ) ){	
+			$hour = (int) $time_info['hours'];
+			// $min = $time_info['minutes'];
+		}
+		if ( is_null($min )  ){
+		// echo "NOT SUPPOSED TO BE SEEN ";
+		// echo "<br>";
+		$min = (int) $time_info['minutes'];
+		}
+		if ( is_null($day )){
+		 $day = (int) $time_info['wday'];
 		}
 		// &&&
 		
 		// //Artificial testing for time 
-		 // $hour = 21	;
-		 // $min  = 58;
-		 // $day = 5;	
+		 // $hour = 24	;
+		 // $min  = 30;
+		 // $day = 6;	
 		  
-		 //REAL TIME 
-		  	$day = (int) $time_info['wday'];
-			$hour = (int) $hour;	
-			$min = (int) $min;
+		 // REAL TIME 
+		  	// $day = (int) $time_info['wday'];
+			// $hour = (int) $hour;	
+			// $min = (int) $min;
 			
 		
-		// echo $hour ;
+		//THIS IS FOR ON/PAST MIDNIGHT REQUESTS 
 		if(is_numeric ($hour)){
 		// echo "OHHHHHHHHHHHHHHHHHHH";
 		}
@@ -821,7 +830,7 @@ the exceptions time range
 			// echo "<br>";
 			// echo "DAY ".$day;
 			// echo "<br>";
-		// echo "MINUTE ".$minute;
+		// echo "MINUTE ".$min;
 		// echo "<br>";
 		//each array represents a range of days and each item in the string is the name of the  
 		//possible route as seen in the db(each cruiser route is a table in the db)
@@ -926,11 +935,24 @@ the exceptions time range
 	//THIS COULD ALSO BE THE POINT WHERE YOU GET TIME INPUT FROM THE USER
 	$FROM =  $_GET["from"];
 	$TO = $_GET["to"];
-		 // $hour = 9;
-		 // $min  = 05;
-		 // $day = 5;	
+	$HOUR = $_GET["hour"];
+	$MIN = $_GET["minute"];
+	$DAY = $_GET["day"];
+	// echo $HOUR,$MIN,$DAY;
+	if ( $HOUR == "current_hour"){
+		$HOUR = NULL;
+	}
+
+	if ( $MIN == "min"){
+		$MIN = NULL;
+	}
+
+	if ( $DAY == "today" ){
+		$DAY = NULL;
+	}
+
 	//the db connection will be there (because this will be used as an include )
-	$list_of_results = combine($FROM,$TO,NULL,NULL,NULL,$con);
+	$list_of_results = combine($FROM,$TO,$DAY,$HOUR,$MIN,$con);
 	// $list_of_results = combine($FROM,$TO,$day,$hour,$min,$con);
 	
 	echo "<ul class=\"nav nav-pills\">";
