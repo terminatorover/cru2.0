@@ -44,19 +44,19 @@ top: -1px; " >GATE CRUISER</h2>
 	<section class="col-sm-4 col-sm-offset-4 " style=" opacity: .9; /* background-color: rgb(62, 111, 69); */ color: black; background-color: rgba(7, 22, 27, 0.91);  ">
 		<?php 
 error_reporting(E_ERROR);
-	// $hostname = null;
-	// $username = "root";
-	// $password = "";
-	// $database = "cruiser_app";
-	// $port = null;
-	// $socket = "/cloudsql/colgate-cruiser:get-cru5";	
+	$hostname = null;
+	$username = "root";
+	$password = "";
+	$database = "cruiser_app";
+	$port = null;
+	$socket = "/cloudsql/colgate-cruiser:get-cru5";	
 	
-		$hostname = 'localhost:3306';
-$username = "robera";
-$password = "password";
-$database = "cruiser_app";
-$port = null;
-$socket = null;
+		// $hostname = 'localhost:3306';
+// $username = "robera";
+// $password = "password";
+// $database = "cruiser_app";
+// $port = null;
+// $socket = null;
 
 
 
@@ -776,6 +776,7 @@ the exceptions time range
 		**/
 		date_default_timezone_set("America/New_York");
 		$time_info = getdate();//inquire the current date/time
+		//set to default what hasn't been custom selected 
 		if ( is_null($hour ) ){	
 			$hour = (int) $time_info['hours'];
 			// $min = $time_info['minutes'];
@@ -968,6 +969,16 @@ the exceptions time range
 
 	mysqli_close($con);
  ?>
+	
+
+
+<ul class="nav nav-pills nav-stacked">
+<li> <a href="http://www.colgate.edu/docs/default-source/d_about_maps_colgatecruiser/cruiser-schedule-2013-2014-9-10-13.pdf?sfvrsn=0">
+Click here if you wish to verify that the results are optimal. 
+ </a></li>
+</ul>
+
+	
 	<form action="index_copy.php" action="get" >
 		<div class="row">
 				<button type="submit"  class="btn btn-danger  col-xs-6 col-xs-offset-3" style ="margin-top:3em; font-family: 'Graduate', cursive;" >BACK</button>
